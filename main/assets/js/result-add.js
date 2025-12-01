@@ -98,35 +98,145 @@ document.getElementById("studentTerm").addEventListener("change", async (e) => {
   }
 });
 
+// ======================================================
+// Load Student Info + Auto Load Subjects for Class
+// ======================================================
+
+let isSS3 = false;
+
 // ---------------------------
 // Load Student Info
 // ---------------------------
-let isSS3 = false;
-
 async function loadStudent() {
   try {
     const snap = await get(ref(studentDb, `Students/${studentID}`));
-    if (snap.exists()) {
-      const data = snap.val();
-      document.getElementById("studentName").textContent = data.name || "N/A";
-      document.getElementById("studentClass").textContent = data.studentClass || "N/A";
-      document.getElementById("studentGender").textContent = data.gender || "N/A";
 
-      // Detect SS3 (Supports both SS3 and SSS 3)
-      const normalizedClass = data.studentClass.replace(/\s+/g, '').toUpperCase();
-      isSS3 = (normalizedClass === "SSS3");
-
-      console.log("SS3 Class Detected:", isSS3);
-
-    } else {
+    if (!snap.exists()) {
       showNotification("❌ Student not found!", false);
+      return;
     }
+
+    const data = snap.val();
+
+    // --- Load Student Bio ---
+    document.getElementById("studentName").textContent = data.name || "N/A";
+    document.getElementById("studentClass").textContent = data.studentClass || "N/A";
+    document.getElementById("studentGender").textContent = data.gender || "N/A";
+
+    // --- Detect SS3 (handles SS3 / SS 3 / SSS3 / SSS 3) ---
+    const normalizedClass = data.studentClass.replace(/\s+/g, '').toUpperCase();
+    isSS3 = (normalizedClass === "SS3" || normalizedClass === "SSS3");
+
+    console.log("SS3 Class Detected:", isSS3);
+
+    // --- Load default subjects automatically ---
+    loadDefaultSubjectsForClass(data.studentClass);
+
   } catch (err) {
     showNotification("⚠️ Error loading student info: " + err.message, false);
   }
 }
 
+
+// ======================================================
+// AUTO LOAD SUBJECTS BASED ON CLASS
+// ======================================================
+
+function loadDefaultSubjectsForClass(studentClass) {
+
+  const cls = (studentClass || "").toLowerCase();
+  tbody.innerHTML = ""; // Clear the table
+
+  if (cls.includes("creche")) {
+    defaultSubjects.creche.forEach(sub => addSubjectRow(sub));
+  }
+  else if (cls.includes("nursery")) {
+    defaultSubjects.nursery.forEach(sub => addSubjectRow(sub));
+  }
+  else if (cls.includes("primary")) {
+    defaultSubjects.primary.forEach(sub => addSubjectRow(sub));
+  }
+  else {
+    // JSS, SS1, SS2, SS3 → leave table empty for manual subjects
+    console.log("No default subjects for this class.");
+  }
+}
+
+
+// ======================================================
+// DEFAULT SUBJECT LISTS FOR EACH CLASS
+// ======================================================
+
+const defaultSubjects = {
+
+  creche: [
+    "Number Concepts",
+    "Language Skills",
+    "Basic Science",
+    "Social Habits",
+    "Health Habits",
+    "Practical Life",
+    "Sensorial Education",
+    "Fine Motor Skills",
+    "Gymnastics",
+    "Bible Knowledge",
+    "Newstalk",
+    "Computer Technology",
+    "Rymes & Songs",
+    "Arts & Crafts",
+    "Character Education"
+  ],
+
+  nursery: [
+    "Number Concepts",
+    "Language Skills",
+    "Basic Science",
+    "Social Habits",
+    "Health Habits",
+    "Practical Life",
+    "Sensorial Education",
+    "Fine Motor Skills",
+    "Gymnastics",
+    "Bible Knowledge",
+    "Newstalk",
+    "Computer Technology",
+    "Rymes & Songs",
+    "Arts & Crafts",
+    "Character Education"
+  ],
+
+  primary: [
+    "Mathematics",
+    "English Studies",
+    "Quantitative Reasoning",
+    "Verbal Reasoning",
+    "Civic Education",
+    "Christian Religious Studies",
+    "Physical and Health Education",
+    "Basic Science and Technology",
+    "Social & Citizenship Studies",
+    "Cultural & Creative Arts",
+    "Drawing",
+    "Agricultural Science",
+    "Nigerian History",
+    "Basic Digital Literacy",
+    "Home Economics",
+    "Yoruba",
+    "French",
+    "Music",
+    "Security Education",
+    "Handwriting",
+    "Dictation",
+    "English Literature"
+  ]
+};
+
+// ======================================================
+// START
+// ======================================================
+
 loadStudent();
+
 
 
 
@@ -398,14 +508,26 @@ async function loadPreviousResults() {
 
   try {
     const snapshot = await get(ref(resultDb, `Results/${studentID}/${term}`));
-    tbody.innerHTML = "";
 
     if (snapshot.exists()) {
+      // Only clear table when actual saved results exist
+      tbody.innerHTML = "";
+
       const data = snapshot.val();
       const subjects = data.Subjects || {};
+
       Object.keys(subjects).forEach(sub => {
         const s = subjects[sub];
-        addSubjectRow(s.subject || sub, s.ca1 || 0, s.ca2 || 0, s.exam || 0, s.total || 0, s.grade || "-", s.remark || "-", true);
+        addSubjectRow(
+          s.subject || sub,
+          s.ca1 || 0,
+          s.ca2 || 0,
+          s.exam || 0,
+          s.total || 0,
+          s.grade || "-",
+          s.remark || "-",
+          true
+        );
       });
 
       document.getElementById("classTeacherRemark").value = data.classTeacherRemark || "";
@@ -427,8 +549,11 @@ async function loadPreviousResults() {
       document.getElementById("nextTermDate").value = data.nextTermDate || "";
 
       showNotification("✅ Loaded previous results!", true);
+
     } else {
-      addSubjectRow();
+      // DO NOT CLEAR THE TABLE HERE
+      // DO NOT REMOVE DEFAULT SUBJECTS
+
       showNotification("ℹ️ No previous result found.", false);
     }
   } catch (err) {
@@ -439,6 +564,7 @@ async function loadPreviousResults() {
 
 document.getElementById("studentTerm").addEventListener("change", loadPreviousResults);
 window.addEventListener("load", () => setTimeout(loadPreviousResults, 200));
+
 
 // ---------------------------
 // Save Result (Updated for SS3 & Normal Classes)
@@ -910,14 +1036,6 @@ ${resultTable.outerHTML}
       const fileTitle = `${studentName.replace(/\s+/g, "_")}_${studentID}_Result`;
       printWindow.document.title = fileTitle;
 
-     printWindow.document.getElementById("classTeacherSignatureImg").src =
-    "assets/images/auth/Damotak Logo.png";
-
-printWindow.document.getElementById("proprietorSignatureImg").src =
-    "assets/images/auth/Damotak Logo.png";
-
-
-
       setTimeout(() => {
         printWindow.focus();
         printWindow.print();
@@ -1212,11 +1330,11 @@ document.getElementById("PrintCAResult").addEventListener("click", () => {
     </tr>
   </thead>
   <tbody>
-    <tr><td>A</td><td>A</td><td>Showing Excellent Effort</td></tr>
-    <tr><td>B</td><td>B</td><td>Very Good Effort</td></tr>
-    <tr><td>C</td><td>C</td><td>Needs More Concentrate and Application to Work</td></tr>
-    <tr><td>D</td><td>D</td><td>Needs to be Motivated and Cooperative</td></tr>
-    <tr><td>E</td><td>E</td><td>Needs to be Fully Looked After both at School and Home</td></tr>
+    <tr><td>A</td><td>50-40</td><td>Showing Excellent Effort</td></tr>
+    <tr><td>B</td><td>30-35</td><td>Very Good Effort</td></tr>
+    <tr><td>C</td><td>25-29</td><td>Needs More Concentrate and Application to Work</td></tr>
+    <tr><td>D</td><td>20-24</td><td>Needs to be Motivated and Cooperative</td></tr>
+    <tr><td>E</td><td>0-19</td><td>Needs to be Fully Looked After both at School and Home</td></tr>
   </tbody>
 </table>
 
