@@ -153,8 +153,8 @@ function loadDefaultSubjectsForClass(studentClass) {
   else if (cls.includes("nursery")) {
     defaultSubjects.nursery.forEach(sub => addSubjectRow(sub));
   }
-  else if (cls.includes("primary")) {
-    defaultSubjects.primary.forEach(sub => addSubjectRow(sub));
+  else if (cls.includes("grade")) {
+    defaultSubjects.grade.forEach(sub => addSubjectRow(sub));
   }
   else {
     // JSS, SS1, SS2, SS3 → leave table empty for manual subjects
@@ -205,7 +205,7 @@ const defaultSubjects = {
     "Character Education"
   ],
 
-  primary: [
+  grade: [
     "Mathematics",
     "English Studies",
     "Quantitative Reasoning",
@@ -238,8 +238,6 @@ const defaultSubjects = {
 loadStudent();
 
 
-
-
 // ---------------------------
 // Add Subject Row
 // ---------------------------
@@ -260,18 +258,23 @@ function addSubjectRow(subject = "", ca1 = "", ca2 = "", exam = "", total = "0",
       <td class="text-center">${readOnly ? "" : '<button class="btn btn-danger btn-sm remove-row">✕</button>'}</td>
     `;
   } else {
-    // Normal Classes
+    // NORMAL CLASSES — CA1 = 50, CA2 = 50
     row.innerHTML = `
       <td class="sl">${tbody.children.length + 1}</td>
       <td><input type="text" class="form-control subject-input" value="${subject}" ${readOnly ? "readonly" : ""}></td>
+
       <td><input type="number" class="form-control mark-ca" value="50" readonly></td>
-      <td><input type="number" class="form-control ca-input" value="${ca1}" min="0" max="25" ${readOnly ? "readonly" : ""}></td>
-      <td><input type="number" class="form-control ca-input" value="${ca2}" min="0" max="25" ${readOnly ? "readonly" : ""}></td>
+
+      <td><input type="number" class="form-control ca-input" value="${ca1}" min="0" max="50" ${readOnly ? "readonly" : ""}></td>
+      <td><input type="number" class="form-control ca-input" value="${ca2}" min="0" max="50" ${readOnly ? "readonly" : ""}></td>
+
       <td><input type="number" class="form-control mark-exam" value="100" readonly></td>
       <td><input type="number" class="form-control exam-input" value="${exam}" min="0" max="100" ${readOnly ? "readonly" : ""}></td>
+
       <td class="total-score">${total}</td>
       <td class="grade">${grade}</td>
       <td class="remark">${remark}</td>
+
       <td class="text-center">${readOnly ? "" : '<button class="btn btn-danger btn-sm remove-row">✕</button>'}</td>
     `;
   }
@@ -299,19 +302,17 @@ tbody.addEventListener("click", (e) => {
 });
 
 // ---------------------------
-// Auto Calculate (Unified System)
+// Auto Calculate with CA Average
 // ---------------------------
 tbody.addEventListener("input", (e) => {
   const tr = e.target.closest("tr");
   if (!tr) return;
 
-  // SS3 — Exam only
+  // SS3 — exam only
   if (isSS3) {
     const exam = parseInt(tr.querySelector(".exam-input").value) || 0;
-    const total = exam;
-
-    tr.querySelector(".total-score").textContent = total;
-    updateGrade(tr, total);
+    tr.querySelector(".total-score").textContent = exam;
+    updateGrade(tr, exam);
     return;
   }
 
@@ -319,52 +320,36 @@ tbody.addEventListener("input", (e) => {
   const caInputs = tr.querySelectorAll(".ca-input");
   const examInput = tr.querySelector(".exam-input");
 
-  const ca1 = parseInt(caInputs[0].value) || 0;
-  const ca2 = parseInt(caInputs[1].value) || 0;
+  let ca1 = parseInt(caInputs[0].value) || 0;
+  let ca2 = parseInt(caInputs[1].value) || 0;
+
+  if (ca1 > 50) { alert("CA1 cannot exceed 50"); ca1 = caInputs[0].value = 0; }
+  if (ca2 > 50) { alert("CA2 cannot exceed 50"); ca2 = caInputs[1].value = 0; }
+
+  // *** NEW CA LOGIC ***
+  const caFinal = (ca1 + ca2) / 2;  // average of CA1 and CA2
+
   const exam = parseInt(examInput.value) || 0;
 
-  const total = ca1 + ca2 + exam;
+  const total = caFinal + exam;
 
-  tr.querySelector(".total-score").textContent = total;
+  tr.querySelector(".total-score").textContent = total.toFixed(1);
   updateGrade(tr, total);
 });
 
 // ---------------------------
-// Validate CA and Exam Inputs with Max Limits
+// Exam validation
 // ---------------------------
 tbody.addEventListener("input", (e) => {
-  const target = e.target;
-  const tr = target.closest("tr");
+  const tr = e.target.closest("tr");
   if (!tr) return;
 
-  // Validate CA Inputs (Normal classes only)
-  if (target.classList.contains("ca-input") && !isSS3) {
-    if (parseInt(target.value) > 25) {
-      alert(`❌ CA cannot be more than 25! Value reset to 0.`);
-      target.value = 0;
+  if (e.target.classList.contains("exam-input")) {
+    if (parseInt(e.target.value) > 100) {
+      alert("Exam cannot exceed 100");
+      e.target.value = 0;
     }
   }
-
-  // Validate Exam Input
-  if (target.classList.contains("exam-input")) {
-    const maxExam = isSS3 ? 100 : 100;
-    if (parseInt(target.value) > maxExam) {
-      alert(`❌ Exam cannot be more than ${maxExam}! Value reset to 0.`);
-      target.value = 0;
-    }
-  }
-
-  // Recalculate total and grade
-  const caInputs = tr.querySelectorAll(".ca-input");
-  const examInput = tr.querySelector(".exam-input");
-
-  const ca1 = caInputs.length > 0 ? parseInt(caInputs[0].value) || 0 : 0;
-  const ca2 = caInputs.length > 1 ? parseInt(caInputs[1].value) || 0 : 0;
-  const exam = parseInt(examInput.value) || 0;
-
-  const total = ca1 + ca2 + exam;
-  tr.querySelector(".total-score").textContent = total;
-  updateGrade(tr, total);
 });
 
 
@@ -902,7 +887,7 @@ ${resultTable.outerHTML}
 
 <div class="row">
   <div class="col">
-    <h4>Summary</h4>
+    <h4>Total Average Score</h4>
     <ul>
       <li><strong>Total Marks:</strong> ${totalScore}</li>
       <li><strong>Average Score:</strong> ${avgScore}%</li>
@@ -999,11 +984,11 @@ ${resultTable.outerHTML}
     </tr>
   </thead>
   <tbody>
-    <tr><td>A</td><td>75-100</td><td>Excellent</td></tr>
-    <tr><td>B</td><td>60-74</td><td>Very Good</td></tr>
-    <tr><td>C</td><td>50-59</td><td>Good</td></tr>
-    <tr><td>D</td><td>40-49</td><td>Pass</td></tr>
-    <tr><td>E</td><td>0-39</td><td>Fail</td></tr>
+     <tr><td>A</td><td>85-100</td><td>Excellent</td></tr>
+    <tr><td>B</td><td>75-84</td><td>Very Good</td></tr>
+    <tr><td>C</td><td>55-74</td><td>Good</td></tr>
+    <tr><td>D</td><td>40-54</td><td>Average</td></tr>
+    <tr><td>E</td><td>0-40</td><td>Needs Improvement</td></tr>
   </tbody>
 </table>
 
@@ -1064,49 +1049,72 @@ document.getElementById("PrintCAResult").addEventListener("click", () => {
     document.getElementById("confirmPrintBtn").onclick = () => {
         modal.hide();
 
-        const addSubjectBtn = document.getElementById("addRow");
-        if (addSubjectBtn) addSubjectBtn.style.display = "none";
+   const addSubjectBtn = document.getElementById("addRow");
+if (addSubjectBtn) addSubjectBtn.style.display = "none";
 
-        const resultTable = document.getElementById("resultTable").cloneNode(true);
+const resultTable = document.getElementById("resultTable").cloneNode(true);
 
-        // Function to get grade and remark based on score and max marks
-        function getGradeAndRemark(score, max) {
-            const percentage = (score / max) * 100;
-            if (percentage >= 80) return { grade: 'A', remark: 'Excellent' };
-            else if (percentage >= 70) return { grade: 'B', remark: 'Very Good' };
-            else if (percentage >= 60) return { grade: 'C', remark: 'Good' };
-            else if (percentage >= 50) return { grade: 'D', remark: 'Pass' };
-            else return { grade: 'F', remark: 'Fail' };
-        }
+// -------------------------------
+// Grade / Remark Function
+// -------------------------------
+function getGradeAndRemark(score, max) {
+    const percentage = (score / max) * 100;
+    if (percentage >= 80) return { grade: 'A', remark: 'Excellent' };
+    else if (percentage >= 70) return { grade: 'B', remark: 'Very Good' };
+    else if (percentage >= 60) return { grade: 'C', remark: 'Good' };
+    else if (percentage >= 50) return { grade: 'D', remark: 'Pass' };
+    else return { grade: 'F', remark: 'Fail' };
+}
 
-        // Compute TOTAL CA, GRADE, REMARK for each row
+// -------------------------------
+// Compute TOTAL CA, GRADE AND REMARK
+// -------------------------------
+resultTable.querySelectorAll("tbody tr").forEach(tr => {
+    // COLUMN INDEX:
+    // 3 = CA1, 4 = CA2, 7 = TOTAL, 8 = GRADE, 9 = REMARK
+
+    const ca1 = parseFloat(tr.children[3].querySelector("input")?.value) || 0;
+    const ca2 = parseFloat(tr.children[4].querySelector("input")?.value) || 0;
+
+    // NEW RULE: (CA1 + CA2) / 2  → MAX 50
+    let totalCA = (ca1 + ca2) / 2;
+
+    if (totalCA > 50) totalCA = 50; // Prevent going above 50
+
+    tr.children[7].textContent = totalCA; // TOTAL CA (OUT OF 50)
+
+    // COMPUTE GRADE BASED ON 50
+    const { grade, remark } = getGradeAndRemark(totalCA, 50);
+    tr.children[8].textContent = grade;
+    tr.children[9].textContent = remark;
+});
+
+// -------------------------------
+// Hide Exam Columns for CA Print
+// -------------------------------
+resultTable.querySelectorAll("thead th").forEach((th, i) => {
+    const text = th.textContent.toLowerCase().trim();
+
+    if (
+        text.includes("exam") ||
+        text.includes("mark obtainable (exam)") ||
+        text.includes("action")
+    ) {
+        th.style.display = "none";
         resultTable.querySelectorAll("tbody tr").forEach(tr => {
-            // Assuming columns: 0:SL, 1:SUBJECT, 2:MARK OBTAINABLE (CA), 3:C.A 1, 4:C.A 2, 5:MARK OBTAINABLE (EXAM), 6:EXAM, 7:TOTAL, 8:GRADE, 9:REMARK, 10:ACTION
-            const ca1 = parseFloat(tr.children[3].querySelector("input")?.value) || 0;
-            const ca2 = parseFloat(tr.children[4].querySelector("input")?.value) || 0;
-            const totalCA = ca1 + ca2;
-            tr.children[7].textContent = totalCA; // TOTAL CA
-            const { grade, remark } = getGradeAndRemark(totalCA, 50); // CA out of 50
-            tr.children[8].textContent = grade; // GRADE
-            tr.children[9].textContent = remark; // REMARK
+            if (tr.children[i]) tr.children[i].style.display = "none";
         });
+    }
+});
 
-        // HIDE COLUMNS: EXAM, MARK OBTAINABLE (EXAM), ACTION
-        // SHOW TOTAL, GRADE, REMARK
-        resultTable.querySelectorAll("thead th").forEach((th, i) => {
-            const text = th.textContent.toLowerCase().trim();
-            if (text.includes("exam") || text.includes("mark obtainable (exam)") || text.includes("action")) {
-                th.style.display = "none";
-                resultTable.querySelectorAll("tbody tr").forEach(tr => {
-                    if (tr.children[i]) tr.children[i].style.display = "none";
-                });
-            }
-        });
+// -------------------------------
+// Remove Input Fields Before Print
+// -------------------------------
+resultTable.querySelectorAll("input, select").forEach(el => {
+    el.parentElement.textContent = el.value || "-";
+});
 
-        // REMOVE INPUT FIELDS BEFORE PRINT
-        resultTable.querySelectorAll("input, select").forEach(el => {
-            el.parentElement.textContent = el.value || "-";
-        });
+
 
         // Get student info
     const studentName = document.getElementById("studentName").textContent.trim();
@@ -1456,7 +1464,7 @@ document.getElementById("PrintExamResult").addEventListener("click", () => {
     const studentWeight = document.getElementById("studentWeight")?.value || "-";
     const nextTermDate = document.getElementById("nextTermDate")?.value || "-";
 
-    // Calculate total and average
+     // Calculate total and average
 const totals = Array.from(resultTable.querySelectorAll(".total-score")).map(td => parseInt(td.textContent) || 0);
 const totalScore = totals.reduce((a, b) => a + b, 0);
 const avgScore = totals.length ? (totalScore / totals.length).toFixed(2) : "0.00";
@@ -1646,6 +1654,15 @@ document.getElementById("headTeacherRemark").value = headRemarkAuto;
   ${table.outerHTML}
 </div>
 
+<div class="row">
+  <div class="col">
+    <h4>Total Average Score</h4>
+    <ul>
+      <li><strong>Total Marks:</strong> ${totalScore}</li>
+      <li><strong>Average Score:</strong> ${avgScore}%</li>
+    </ul>
+  </div>
+
   <div class="col">
     <h4>Remarks</h4>
     <ul>
@@ -1727,23 +1744,6 @@ document.getElementById("headTeacherRemark").value = headRemarkAuto;
   </tbody>
 </table>
 
-<div class="section-title">System Grading</div>
-<table>
-  <thead>
-    <tr>
-      <th>Grade</th>
-      <th>Score Range</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr><td>A</td><td>75-100</td><td>Excellent</td></tr>
-    <tr><td>B</td><td>60-74</td><td>Very Good</td></tr>
-    <tr><td>C</td><td>50-59</td><td>Good</td></tr>
-    <tr><td>D</td><td>40-49</td><td>Pass</td></tr>
-    <tr><td>E</td><td>0-39</td><td>Fail</td></tr>
-  </tbody>
-</table>
 
 <BR>
 
@@ -1975,12 +1975,6 @@ ${resultTable.outerHTML}
         const fileTitle = `${studentName.replace(/\s+/g, "_")}_${studentID}_Result`;
         printWindow.document.title = fileTitle;
 
-            printWindow.document.getElementById("classTeacherSignatureImg").src =
-    "assets/images/auth/Damotak Logo.png";
-
-printWindow.document.getElementById("proprietorSignatureImg").src =
-    "assets/images/auth/Damotak Logo.png";
-
         setTimeout(() => { printWindow.focus(); printWindow.print(); }, 1000);
         printWindow.onafterprint = printWindow.onbeforeunload = () => {
             printWindow.close();
@@ -2166,7 +2160,7 @@ function clearInputs() {
 // Get Next Class
 // ---------------------------
 function getNextClass(currentClass) {
-    const classes = ["Creche","Nursery 1","Nursery 2","Primary 1","Primary 2","Primary 3","Primary 4","Primary 5","JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3"];
+    const classes = ["Creche","Nursery 1","Nursery 2","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3"];
     const index = classes.indexOf(currentClass);
     if (index >= 0 && index < classes.length - 1) return classes[index+1];
     if (index === classes.length - 1) return "Graduate";
