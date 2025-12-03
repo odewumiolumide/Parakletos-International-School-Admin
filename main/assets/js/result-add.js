@@ -752,15 +752,16 @@ document.getElementById("headTeacherRemark").value = headRemarkAuto;
   }
 
   .school-logo {
-    border: 3px solid #c8102e; /* red border */
-    border-radius: 12px;
-    padding: 5px;
-    width: 150px;
+    width: 180px;            /* bigger logo */
     height: auto;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     display: block;
-    margin: 20px auto;
-  }
+    margin: 10px auto;
+    border: 4px solid #c8102e;
+    border-radius: 15px;
+    padding: 6px;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.25);
+    transform: scale(1.1);   /* prevents shrinking */
+    }
 
   .header {
     text-align: center;
@@ -769,7 +770,13 @@ document.getElementById("headTeacherRemark").value = headRemarkAuto;
   }
 
   .header img { width: 100px; margin-bottom: 10px; }
-  .header h3 { margin: 5px 0; color: #c8102e; text-transform: uppercase; letter-spacing: 1px; }
+  .header h3 { font-size: 26px;         /* larger bold heading */
+    font-weight: 900;        /* heavy bold */
+    color: #c8102e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* makes it stand out */
+    margin-top: 5px; }
   .header p { margin: 2px 0; font-size: 13px; }
 
   .header::after {
@@ -837,6 +844,22 @@ document.getElementById("headTeacherRemark").value = headRemarkAuto;
     @page { size: A4; margin: 1cm; }
   }
 
+  @media print {
+  .school-logo {
+    transform: scale(1.3) !important; /* boost size in print */
+  }
+
+  .header h3 {
+    font-size: 30px !important;       /* bigger in print */
+    font-weight: 900 !important;
+  }
+
+  @page {
+    size: A4;
+    margin: 0.5cm;
+  }
+}
+
   #resultTable td:nth-child(2),
   #resultTable th:nth-child(2),
   #resultTableBody input[name="subject"],
@@ -850,6 +873,7 @@ document.getElementById("headTeacherRemark").value = headRemarkAuto;
 
 <div class="header">
   <img src="assets/images/auth/para logo.jpeg" alt="School Logo" class="school-logo">
+  <br>
   <h3>Parakletos International School</h3>
   <p>No 2 Bisi Bankole Street Oke Onitea Osogbo</p>
   <p>EMAIL: parakletosschool2004@gmail.com</p>
@@ -1199,14 +1223,15 @@ resultTable.querySelectorAll("input, select").forEach(el => {
   }
 
   .school-logo {
-    border: 3px solid #c8102e; /* red border */
-    border-radius: 12px;
-    padding: 5px;
-    width: 150px;
+    width: 180px;            /* bigger logo */
     height: auto;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     display: block;
-    margin: 20px auto;
+    margin: 10px auto;
+    border: 4px solid #c8102e;
+    border-radius: 15px;
+    padding: 6px;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.25);
+    transform: scale(1.1);   /* prevents shrinking */
   }
 
   .header {
@@ -1216,7 +1241,14 @@ resultTable.querySelectorAll("input, select").forEach(el => {
   }
 
   .header img { width: 100px; margin-bottom: 10px; }
-  .header h3 { margin: 5px 0; color: #c8102e; text-transform: uppercase; letter-spacing: 1px; }
+  .header h3 { font-size: 26px;         /* larger bold heading */
+    font-weight: 900;        /* heavy bold */
+    color: #c8102e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* makes it stand out */
+    margin-top: 5px; }
+
   .header p { margin: 2px 0; font-size: 13px; }
 
   .header::after {
@@ -1284,6 +1316,23 @@ resultTable.querySelectorAll("input, select").forEach(el => {
     @page { size: A4; margin: 1cm; }
   }
 
+  @media print {
+  .school-logo {
+    transform: scale(1.3) !important; /* boost size in print */
+  }
+
+  .header h3 {
+    font-size: 30px !important;       /* bigger in print */
+    font-weight: 900 !important;
+  }
+
+  @page {
+    size: A4;
+    margin: 0.5cm;
+  }
+}
+
+
   #resultTable td:nth-child(2),
   #resultTable th:nth-child(2),
   #resultTableBody input[name="subject"],
@@ -1297,6 +1346,7 @@ resultTable.querySelectorAll("input, select").forEach(el => {
 
 <div class="header">
   <img src="assets/images/auth/para logo.jpeg" alt="School Logo">
+  <br>
   <h3>Parakletos International School</h3>
   <p>No 2 Bisi Bankole Street Oke Onitea Osogbo</p>
   <p>EMAIL: parakletosschool2004@gmail.com</p>
@@ -1554,14 +1604,15 @@ document.getElementById("headTeacherRemark").value = headRemarkAuto;
   }
 
   .school-logo {
-    border: 3px solid #c8102e; /* red border */
-    border-radius: 12px;
-    padding: 5px;
-    width: 150px;
+    width: 180px;            /* bigger logo */
     height: auto;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     display: block;
-    margin: 20px auto;
+    margin: 10px auto;
+    border: 4px solid #c8102e;
+    border-radius: 15px;
+    padding: 6px;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.25);
+    transform: scale(1.1);   /* prevents shrinking */
   }
 
   .header {
@@ -1571,7 +1622,14 @@ document.getElementById("headTeacherRemark").value = headRemarkAuto;
   }
 
   .header img { width: 100px; margin-bottom: 10px; }
-  .header h3 { margin: 5px 0; color: #c8102e; text-transform: uppercase; letter-spacing: 1px; }
+  .header h3 {font-size: 26px;         /* larger bold heading */
+    font-weight: 900;        /* heavy bold */
+    color: #c8102e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* makes it stand out */
+    margin-top: 5px; }
+
   .header p { margin: 2px 0; font-size: 13px; }
 
   .header::after {
@@ -1639,6 +1697,23 @@ document.getElementById("headTeacherRemark").value = headRemarkAuto;
     @page { size: A4; margin: 1cm; }
   }
 
+  @media print {
+  .school-logo {
+    transform: scale(1.3) !important; /* boost size in print */
+  }
+
+  .header h3 {
+    font-size: 30px !important;       /* bigger in print */
+    font-weight: 900 !important;
+  }
+
+  @page {
+    size: A4;
+    margin: 0.5cm;
+  }
+}
+
+
   #resultTable td:nth-child(2),
   #resultTable th:nth-child(2),
   #resultTableBody input[name="subject"],
@@ -1652,6 +1727,7 @@ document.getElementById("headTeacherRemark").value = headRemarkAuto;
 
 <div class="header">
   <img src="assets/images/auth/para logo.jpeg" alt="School Logo">
+  <br>
   <h3>Parakletos International School</h3>
   <p>No 2 Bisi Bankole Street Oke Onitea Osogbo</p>
   <p>EMAIL: parakletosschool2004@gmail.com</p>
@@ -2194,7 +2270,7 @@ function clearInputs() {
 // Get Next Class
 // ---------------------------
 function getNextClass(currentClass) {
-    const classes = ["Creche","Nursery 1","Nursery 2","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3"];
+    const classes = ["Pre Nusery","Nursery 1","Nursery 2","Prep-Grade","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3"];
     const index = classes.indexOf(currentClass);
     if (index >= 0 && index < classes.length - 1) return classes[index+1];
     if (index === classes.length - 1) return "Graduate";
