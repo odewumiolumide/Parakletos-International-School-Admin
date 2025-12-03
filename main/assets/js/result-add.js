@@ -1062,8 +1062,8 @@ function getGradeAndRemark(score, max) {
     if (percentage >= 80) return { grade: 'A', remark: 'Excellent' };
     else if (percentage >= 70) return { grade: 'B', remark: 'Very Good' };
     else if (percentage >= 60) return { grade: 'C', remark: 'Good' };
-    else if (percentage >= 50) return { grade: 'D', remark: 'Pass' };
-    else return { grade: 'F', remark: 'Fail' };
+    else if (percentage >= 50) return { grade: 'D', remark: 'Average' };
+    else return { grade: 'E', remark: 'Needs Improvement' };
 }
 
 // -------------------------------
@@ -1320,11 +1320,11 @@ resultTable.querySelectorAll("input, select").forEach(el => {
     </tr>
   </thead>
   <tbody>
-    <tr><td>A</td><td>40-50</td><td>Excellent</td></tr>
-    <tr><td>B</td><td>30-35</td><td>Very Good</td></tr>
-    <tr><td>C</td><td>25-29</td><td>Good</td></tr>
-    <tr><td>D</td><td>20-24</td><td>Pass</td></tr>
-    <tr><td>E</td><td>0-19</td><td>Fail</td></tr>
+    <tr><td>A</td><td>85-100</td><td>Excellent</td></tr>
+    <tr><td>B</td><td>75-84</td><td>Very Good</td></tr>
+    <tr><td>C</td><td>55-74</td><td>Good</td></tr>
+    <tr><td>D</td><td>40-54</td><td>Average</td></tr>
+    <tr><td>E</td><td>0-40</td><td>Needs Improvement</td></tr>
   </tbody>
 </table>
 
@@ -1402,8 +1402,8 @@ document.getElementById("PrintExamResult").addEventListener("click", () => {
             if (percentage >= 80) return { grade: 'A', remark: 'Excellent' };
             else if (percentage >= 70) return { grade: 'B', remark: 'Very Good' };
             else if (percentage >= 60) return { grade: 'C', remark: 'Good' };
-            else if (percentage >= 50) return { grade: 'D', remark: 'Pass' };
-            else return { grade: 'F', remark: 'Fail' };
+            else if (percentage >= 50) return { grade: 'D', remark: 'Average' };
+            else return { grade: 'E', remark: 'Needs Improvement' };
         }
 
         // Compute TOTAL (EXAM SCORE), GRADE, REMARK for each row
@@ -2020,7 +2020,7 @@ async function loadYearlySummary() {
         if (avgTotal >= 70) { grade = "A"; remark = "Excellent"; }
         else if (avgTotal >= 60) { grade = "B"; remark = "Very Good"; }
         else if (avgTotal >= 50) { grade = "C"; remark = "Good"; }
-        else if (avgTotal >= 40) { grade = "D"; remark = "Fair"; }
+        else if (avgTotal >= 40) { grade = "D"; remark = "Averge"; }
         else { grade = "F"; remark = "Fail"; }
 
         const row = document.createElement("tr");
