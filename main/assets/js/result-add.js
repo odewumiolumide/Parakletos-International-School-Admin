@@ -890,7 +890,7 @@ ${resultTable.outerHTML}
     <h4>Total Average Score</h4>
     <ul>
       <li><strong>Total Marks:</strong> ${totalScore}</li>
-      <li><strong>Average Score:</strong> ${avgScore}%</li>
+      <li><strong>Average Percentage:</strong> ${avgScore}%</li>
     </ul>
   </div>
   <div class="col">
@@ -1067,8 +1067,10 @@ function getGradeAndRemark(score, max) {
 }
 
 // -------------------------------
-// Compute TOTAL CA, GRADE AND REMARK
+// Compute TOTAL CA, GRADE AND REMARK PER SUBJECT
 // -------------------------------
+let allCATotals = [];
+
 resultTable.querySelectorAll("tbody tr").forEach(tr => {
     // COLUMN INDEX:
     // 3 = CA1, 4 = CA2, 7 = TOTAL, 8 = GRADE, 9 = REMARK
@@ -1076,19 +1078,40 @@ resultTable.querySelectorAll("tbody tr").forEach(tr => {
     const ca1 = parseFloat(tr.children[3].querySelector("input")?.value) || 0;
     const ca2 = parseFloat(tr.children[4].querySelector("input")?.value) || 0;
 
-    // NEW RULE: (CA1 + CA2) / 2  → MAX 50
+    // (CA1 + CA2) / 2 → MAX 50
     let totalCA = (ca1 + ca2) / 2;
+    if (totalCA > 50) totalCA = 50;
 
-    if (totalCA > 50) totalCA = 50; // Prevent going above 50
+    tr.children[7].textContent = totalCA; // TOTAL CA per subject
+    allCATotals.push(totalCA);
 
-    tr.children[7].textContent = totalCA; // TOTAL CA (OUT OF 50)
-
-    // COMPUTE GRADE BASED ON 50
+    // Grade & Remark per subject
     const { grade, remark } = getGradeAndRemark(totalCA, 50);
     tr.children[8].textContent = grade;
     tr.children[9].textContent = remark;
 });
 
+// -------------------------------
+// Compute OVERALL CA TOTAL, AVERAGE PERCENTAGE, GRADE
+// -------------------------------
+const totalCA = allCATotals.reduce((a, b) => a + b, 0);
+const maxCAperSubject = 50;
+const overallCAmax = allCATotals.length * maxCAperSubject;
+const caAverage = allCATotals.length ? ((totalCA / overallCAmax) * 100).toFixed(2) : "0.00";
+
+// Overall CA Grade
+const caGrade = caAverage >= 80 ? "A" :
+                caAverage >= 70 ? "B" :
+                caAverage >= 60 ? "C" :
+                caAverage >= 50 ? "D" : "E";
+
+// -------------------------------
+// Compute OVERALL TOTAL SCORE & AVG (renamed)
+// -------------------------------
+const overallMarksArr = Array.from(resultTable.querySelectorAll(".total-score"))
+  .map(td => parseFloat(td.textContent) || 0);
+const overallMarks = overallMarksArr.reduce((a, b) => a + b, 0);
+const overallPercentage = overallMarksArr.length ? (overallMarks / overallMarksArr.length).toFixed(2) : "0.00";
 // -------------------------------
 // Hide Exam Columns for CA Print
 // -------------------------------
@@ -1308,6 +1331,17 @@ resultTable.querySelectorAll("input, select").forEach(el => {
 <div>
   <h4>Continuous Assessment Results</h4>
   ${resultTable.outerHTML}
+</div>
+
+<div class="row">
+  <div class="col">
+    <h4>CA Performance Summary</h4>
+    <ul>
+      <li><strong>Total CA Marks:</strong> ${totalCA}</li>
+      <li><strong>CA Average Percentage:</strong> ${caAverage}%</li>
+      <li><strong>CA Grade:</strong> ${caGrade}</li>
+    </ul>
+  </div>
 </div>
 
 <div class="section-title">System Grading</div>
@@ -1659,7 +1693,7 @@ document.getElementById("headTeacherRemark").value = headRemarkAuto;
     <h4>Total Average Score</h4>
     <ul>
       <li><strong>Total Marks:</strong> ${totalScore}</li>
-      <li><strong>Average Score:</strong> ${avgScore}%</li>
+      <li><strong>Average Percentage:</strong> ${avgScore}%</li>
     </ul>
   </div>
 
