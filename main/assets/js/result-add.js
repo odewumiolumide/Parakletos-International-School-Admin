@@ -182,7 +182,7 @@ const defaultSubjects = {
     "Bible Knowledge",
     "Newstalk",
     "Computer Technology",
-    "Rymes & Songs",
+    "Rhymes & Songs",
     "Arts & Crafts",
     "Character Education"
   ],
@@ -200,7 +200,7 @@ const defaultSubjects = {
     "Bible Knowledge",
     "Newstalk",
     "Computer Technology",
-    "Rymes & Songs",
+    "Rhymes & Songs",
     "Arts & Crafts",
     "Character Education"
   ],
@@ -481,6 +481,15 @@ remarkFields.forEach((id, index) => {
       }
     }
   });
+});
+
+// Auto Teacher Remarks //
+document.getElementById("remarkSelect").addEventListener("change", function () {
+    const selectedRemark = this.value;
+    const remarkBox = document.getElementById("classTeacherRemark");
+
+    // Auto-fill the textarea
+    remarkBox.value = selectedRemark;
 });
 
 
@@ -1052,7 +1061,7 @@ ${resultTable.outerHTML}
 
       printWindow.onafterprint = printWindow.onbeforeunload = () => {
         printWindow.close();
-        location.href = "result-add.html";
+        location.href = "result-list.html";
       };
     };
 
@@ -1457,7 +1466,7 @@ resultTable.querySelectorAll("input, select").forEach(el => {
             setTimeout(() => printWindow.print(), 400);
             printWindow.onafterprint = () => {
                 printWindow.close();
-                location.href = "result-add.html";
+                location.href = "result-list.html";
             };
         };
 
@@ -1919,7 +1928,7 @@ document.getElementById("headTeacherRemark").value = headRemarkAuto;
             setTimeout(() => printWindow.print(), 400);
             printWindow.onafterprint = () => {
                 printWindow.close();
-                location.href = "result-add.html";
+                location.href = "result-list.html";
             };
         };
 
