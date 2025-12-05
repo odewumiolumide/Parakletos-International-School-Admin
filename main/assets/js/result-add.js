@@ -118,18 +118,18 @@ async function loadStudent() {
 
     const data = snap.val();
 
-    // --- Load Student Bio ---
+    // Load Student Bio
     document.getElementById("studentName").textContent = data.name || "N/A";
     document.getElementById("studentClass").textContent = data.studentClass || "N/A";
     document.getElementById("studentGender").textContent = data.gender || "N/A";
 
-    // --- Detect SS3 (handles SS3 / SS 3 / SSS3 / SSS 3) ---
-    const normalizedClass = data.studentClass.replace(/\s+/g, '').toUpperCase();
-    isSS3 = (normalizedClass === "SS3" || normalizedClass === "SSS3");
+    // Detect SS3 (SS3 / SS 3 / SSS3 / SSS 3)
+    const normalized = data.studentClass.replace(/\s+/g, "").toUpperCase();
+    isSS3 = (normalized === "SS3" || normalized === "SSS3");
 
-    console.log("SS3 Class Detected:", isSS3);
+    console.log("SS3 Detected:", isSS3);
 
-    // --- Load default subjects automatically ---
+    // Load subjects
     loadDefaultSubjectsForClass(data.studentClass);
 
   } catch (err) {
@@ -137,31 +137,60 @@ async function loadStudent() {
   }
 }
 
-
 // ======================================================
-// AUTO LOAD SUBJECTS BASED ON CLASS
+// AUTO LOAD SUBJECTS BASED ON CLASS + ORDERING LOGIC
 // ======================================================
 
 function loadDefaultSubjectsForClass(studentClass) {
+  if (!studentClass) return;
 
-  const cls = (studentClass || "").toLowerCase();
-  tbody.innerHTML = ""; // Clear the table
+  const cls = studentClass.trim().toLowerCase();
+  const norm = cls.replace(/[\s-]/g, ""); // remove spaces & hyphens
 
-  if (cls.includes("creche")) {
-    defaultSubjects.creche.forEach(sub => addSubjectRow(sub));
+  tbody.innerHTML = ""; // Clear table
+
+  // Map normalized input → defaultSubjects key
+  const classMap = {
+    "prenusery": "preNusery", // fix for "Pre Nusery"
+    "nusery1": "prebasic1",
+    "nursery1": "prebasic1",
+    "nusery2": "prebasic2",
+    "nursery2": "prebasic2",
+    "prepgrade": "prebasic3",
+    "grade1": "basic1",
+    "grade2": "basic2",
+    "grade3": "basic3",
+    "grade4": "basic4",
+    "grade5": "basic5",
+    "jss1": "jss1",
+    "jss2": "jss2",
+    "jss3": "jss3",
+    "sss1": "sss1",
+    "sss2": "sss2",
+    "sss3": "sss3"
+  };
+
+  const matchKey = classMap[norm];
+
+  if (!matchKey || !defaultSubjects[matchKey]) {
+    console.log("No default subjects for this class:", studentClass);
+    return;
   }
-  else if (cls.includes("nursery")) {
-    defaultSubjects.nursery.forEach(sub => addSubjectRow(sub));
-  }
-  else if (cls.includes("grade")) {
-    defaultSubjects.grade.forEach(sub => addSubjectRow(sub));
-  }
-  else {
-    // JSS, SS1, SS2, SS3 → leave table empty for manual subjects
-    console.log("No default subjects for this class.");
-  }
+
+  let subjects = [...defaultSubjects[matchKey]];
+
+  const math = subjects.filter(s => s.toLowerCase().includes("math"));
+  const eng = subjects.filter(s => s.toLowerCase().startsWith("english"));
+  const remaining = subjects.filter(s => !math.includes(s) && !eng.includes(s));
+
+  remaining.sort((a, b) => a.localeCompare(b));
+
+  const orderedSubjects = [...math, ...eng, ...remaining];
+
+  orderedSubjects.forEach(sub => addSubjectRow(sub));
+
+  console.log("Subjects Loaded:", orderedSubjects);
 }
-
 
 // ======================================================
 // DEFAULT SUBJECT LISTS FOR EACH CLASS
@@ -169,65 +198,140 @@ function loadDefaultSubjectsForClass(studentClass) {
 
 const defaultSubjects = {
 
-  creche: [
-    "Number Concepts",
-    "Language Skills",
-    "Basic Science",
-    "Social Habits",
-    "Health Habits",
-    "Practical Life",
-    "Sensorial Education",
-    "Fine Motor Skills",
-    "Gymnastics",
-    "Bible Knowledge",
-    "Newstalk",
-    "Computer Technology",
-    "Rhymes & Songs",
-    "Arts & Crafts",
-    "Character Education"
+  preNusery: [
+    "English (letter work)",
+    "Mathematics (Number work)",
+    "Social Habit",
+    "Health Habit",
+    "Diction",
+    "PHE",
+    "Elementary Science",
+    "Rhymes",
+    "Writing",
+    "Fine Art/ colour"
   ],
 
-  nursery: [
-    "Number Concepts",
-    "Language Skills",
-    "Basic Science",
-    "Social Habits",
-    "Health Habits",
-    "Practical Life",
-    "Sensorial Education",
-    "Fine Motor Skills",
-    "Gymnastics",
-    "Bible Knowledge",
-    "Newstalk",
-    "Computer Technology",
-    "Rhymes & Songs",
-    "Arts & Crafts",
-    "Character Education"
+  prebasic1: [
+    "English (letter work)",
+    "Mathematics (Number work)",
+    "Social Habit",
+    "Health Habit",
+    "Diction",
+    "PHE",
+    "Elementary Science",
+    "Rhymes",
+    "Writing",
+    "Fine Art/ colour",
+    "QR",
+    "VR",
+    "Literature",
+    "Dictation"
   ],
 
-  grade: [
-    "Mathematics",
-    "English Studies",
-    "Quantitative Reasoning",
-    "Verbal Reasoning",
-    "Civic Education",
-    "Christian Religious Studies",
-    "Physical and Health Education",
-    "Basic Science and Technology",
-    "Social & Citizenship Studies",
-    "Cultural & Creative Arts",
-    "Drawing",
-    "Agricultural Science",
-    "Nigerian History",
-    "Basic Digital Literacy",
-    "Home Economics",
-    "Yoruba",
-    "French",
-    "Music",
-    "Security Education",
-    "Handwriting",
-    "Dictation",
-    "English Literature"
+  prebasic2: [
+    "English (letter work)",
+    "Mathematics (Number work)",
+    "Social Habit",
+    "Health Habit",
+    "Diction",
+    "PHE",
+    "Elementary Science",
+    "Rhymes",
+    "Writing",
+    "Fine Art/ colour",
+    "QR",
+    "VR",
+    "Literature",
+    "Dictation"
+  ],
+
+  prebasic3: [
+    "English (letter work)",
+    "Mathematics (Number work)",
+    "Social Habit",
+    "Health Habit",
+    "Diction",
+    "PHE",
+    "Elementary Science",
+    "Rhymes",
+    "Writing",
+    "Fine Art/ colour",
+    "QR",
+    "VR",
+    "Literature",
+    "Dictation"
+  ],
+
+  basic1: [
+    "Mathematics", "English Studies", "Diction", "BST", "Literature",
+    "Quatitative Reasoning", "Verbal Reasoning", "CCA", "CRS",
+    "Yoruba", "NVE", "History", "Dictation", "Writing"
+  ],
+
+  basic2: [
+    "Mathematics", "English Studies", "Diction", "BST", "Literature",
+    "Quatitative Reasoning", "Verbal Reasoning", "CCA", "CRS",
+    "Yoruba", "NVE", "History", "Dictation", "Writing"
+  ],
+
+  basic3: [
+    "Mathematics", "English Studies", "Diction", "BST", "Literature",
+    "Quatitative Reasoning", "Verbal Reasoning", "CCA", "CRS",
+    "Yoruba", "NVE", "History", "Dictation", "Writing"
+  ],
+
+  basic4: [
+    "Mathematics", "English Studies", "Diction", "PVS", "BST",
+    "Literature", "Quatitative Reasoning", "Verbal Reasoning",
+    "CCA", "CRS", "Yoruba", "NVE", "History", "Dictation", "Writing"
+  ],
+
+  basic5: [
+    "Mathematics", "English Studies", "Diction", "PVS", "BST",
+    "Literature", "Quatitative Reasoning", "Verbal Reasoning",
+    "CCA", "CRS", "Yoruba", "NVE", "History", "Dictation", "Writing"
+  ],
+
+  jss1: [
+    "Mathematics", "English",
+    "Physical and Health Education (PHE)",
+    "Business studies (BS)", "Social and citizenship studies",
+    "Basic Science and Technology (BST)", "Christian Religion Studies (CRS)",
+    "Cultural and creative Art (CCA)", "Nigeria History",
+    "Diction", "Digital Technology", "Dictation", "Yoruba"
+  ],
+
+  jss2: [
+    "Mathematics", "English",
+    "Pre- vocational studies (PVS)",
+    "Business studies (BS)", "National Value Education (NVE)",
+    "Basic Science and Technology (BST)", "Christian Religion Studies (CRS)",
+    "Cultural and creative Art (CCA)", "Nigeria History",
+    "Diction", "Information and Communication Technology (ICT)",
+    "Dictation", "Yoruba"
+  ],
+
+  jss3: [
+    "Mathematics", "English",
+    "Pre- vocational studies (PVS)",
+    "Business studies (BS)", "National Value Education (NVE)",
+    "Basic Science and Technology (BST)", "Christian Religion Studies (CRS)",
+    "Cultural and creative Art (CCA)", "Nigeria History",
+    "Diction", "Information and Communication Technology (ICT)",
+    "Dictation", "Yoruba"
+  ],
+
+  sss1: [
+    "Mathematics", "English", "Citizenship & Heritage Studies (CHS)",
+    "Economics", "Digital Technology", "Phonics"
+  ],
+
+  sss2: [
+    "Mathematics", "English", "Civic- Education", "ICT", "Phonics"
+  ],
+
+  sss3: [
+    "Mathematics", "English", "Civic- Education", "ICT", "Phonics"
   ]
 };
 
@@ -2279,7 +2383,7 @@ function clearInputs() {
 // Get Next Class
 // ---------------------------
 function getNextClass(currentClass) {
-    const classes = ["Pre Nusery","Nursery 1","Nursery 2","Prep-Grade","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3"];
+    const classes = ["preNursery","nursery 1","nursery 2","Prep-Grade","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3"];
     const index = classes.indexOf(currentClass);
     if (index >= 0 && index < classes.length - 1) return classes[index+1];
     if (index === classes.length - 1) return "Graduate";
