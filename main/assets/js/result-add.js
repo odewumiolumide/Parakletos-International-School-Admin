@@ -1981,7 +1981,7 @@ document.getElementById("headTeacherRemark").value = headRemarkAuto;
     <h4>Remarks</h4>
     <ul>
       <li><strong>Class Teacher:</strong> ${classRemark}</li>
-      <li><strong>Head Teacher:</strong> ${headRemarkAuto}</li>
+      <li><strong>Proprietor’s Signature Remark:</strong> ${headRemarkAuto}</li>
     </ul>
   </div>
 </div>
