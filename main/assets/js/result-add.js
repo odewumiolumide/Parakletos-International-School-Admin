@@ -355,7 +355,6 @@ const defaultSubjects = {
     "Home Economics",
     "Yoruba",
     "Security Education",
-    "Handwriting",
     "Dictation",
     "English literature"
   ],
@@ -1126,7 +1125,7 @@ ${resultTable.outerHTML}
     <h4>Remarks</h4>
     <ul>
       <li><strong>Class Teacher:</strong> ${classRemark}</li>
-      <li><strong>Head Teacher:</strong> ${headRemarkAuto}</li>
+      <li><strong>Proprietor’s Signature Remark:</strong> ${headRemarkAuto}</li>
     </ul>
   </div>
 </div>
