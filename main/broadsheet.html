@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ADMIN PAGE</title>
+  <title>Parakletos International School | Admin Login</title>
   <link rel="icon" type="image/png" href="assets/images/auth/para logo.jpeg">
   <!-- remix icon font css  -->
   <link rel="stylesheet" href="assets/css/remixicon.css">
@@ -39,6 +39,46 @@
   <!-- main css -->
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
+<style>
+  .card-body {
+  max-height: 70vh;       /* Adjust the visible height of the table container */
+  overflow-y: auto;       /* Enable vertical scrolling */
+}
+
+#broadsheetTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#broadsheetTable th,
+#broadsheetTable td {
+  text-align: center;
+  padding: 6px;
+  font-size: 13px;
+  white-space: nowrap;   /* Prevent text wrapping for subjects */
+}
+
+/* Make table header sticky */
+#broadsheetHead th {
+  position: sticky;
+  top: 0;
+  background: #f8f9fa; /* match your header background */
+  z-index: 2;
+  border-bottom: 2px solid #dee2e6;
+}
+
+/* Optional: scrollbar styling for modern browsers */
+.card-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.card-body::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+</style>
 
 <body>
 
@@ -159,7 +199,7 @@
   </button>
   <div>
     <a href="admin-dashboard.html" class="sidebar-logo">
-   <img src="assets/images/PARAKLETOS INTERNATIONAL SCHOOL LOGO.jpeg" alt="site logo" class="light-logo">
+     <img src="assets/images/PARAKLETOS INTERNATIONAL SCHOOL LOGO.jpeg" alt="site logo" class="light-logo">
       <img src="assets/images/PARAKLETOS INTERNATIONAL SCHOOL LOGO.jpeg" alt="site logo" class="dark-logo">
       <img src="assets/images/PARAKLETOS INTERNATIONAL SCHOOL LOGO.jpeg" alt="site logo" class="logo-icon">
     </a>
@@ -183,12 +223,7 @@
 
      
       
-    <!--- <li>
-        <a href="classes.html">
-          <iconify-icon icon="solar:calendar-outline" class="menu-icon"></iconify-icon>
-          <span>Classes</span>
-        </a>
-      </li> -->
+    
 
       <li class="dropdown">
         <a href="javascript:void(0)">
@@ -218,6 +253,9 @@
           <li>
             <a href="result-add.html"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i>
               Add New</a>
+          </li>
+           <li>
+            <a href="broadsheet.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> BroadSheet List</a>
           </li>
           <li>
             <a href="result-edit.html"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Edit</a>
@@ -255,7 +293,7 @@
           <li>
             <a href="view-profile.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> School Profile</a>
           </li>
-         
+          
         </ul>
       </li>
     </ul>
@@ -403,7 +441,7 @@
                   href="view-profile.html">
                   <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon> My Profile</a>
               </li>
-              
+             
               <li>
                 <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3"
                   href="" id="logoutBtn">
@@ -420,349 +458,97 @@
   <div class="dashboard-main-body">
 
     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-  <h6 class="fw-semibold mb-0">Add Students Exam Result</h6>
+  <h6 class="fw-semibold mb-0">Broadsheet Result List</h6>
   <ul class="d-flex align-items-center gap-2">
     <li class="fw-medium">
-      <a href="admin-dashboard.html" class="d-flex align-items-center gap-1 hover-text-primary">
+      <a href="admin-home.html" class="d-flex align-items-center gap-1 hover-text-primary">
         <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
         Dashboard
       </a>
     </li>
     <li>-</li>
-    <li class="fw-medium">Add Students Exam Result</li>
+    <li class="fw-medium">Broadsheet Result List</li>
   </ul>
 </div>
     
-     <div class="card">
-    <div class="card-header">
-      <div class="d-flex flex-wrap align-items-center justify-content-end gap-2">
-        <button id="backBtn" type="button" class="btn btn-sm btn-primary-600 radius-8 d-inline-flex align-items-center gap-1">
-  <iconify-icon icon="simple-line-icons:arrow-left" class="text-xl"></iconify-icon>
-  Back
-</button>
-
-        <button id="saveResult" type="button" class="btn btn-sm btn-warning radius-8 d-inline-flex align-items-center gap-1">
-          <iconify-icon icon="simple-line-icons:check" class="text-xl"></iconify-icon>
-          Save Result
-        </button>
-        
-  <button id="PrintResult" type="button" class="btn btn-sm btn-primary-600 radius-8 d-inline-flex align-items-center gap-1">
-  <iconify-icon icon="simple-line-icons:check" class="text-xl"></iconify-icon>
-  Print All Result
-</button>
-
- <button id="PrintCAResult" type="button" class="btn btn-sm btn-primary-600 radius-8 d-inline-flex align-items-center gap-1">
-  <iconify-icon icon="simple-line-icons:check" class="text-xl"></iconify-icon>
-  Print CA Result
-</button>
-
- <button id="PrintExamResult" type="button" class="btn btn-sm btn-primary-600 radius-8 d-inline-flex align-items-center gap-1">
-  <iconify-icon icon="simple-line-icons:check" class="text-xl"></iconify-icon>
-  Print Exam Result
-</button>
-
-<!---<button id="MoveNextSession" class="btn btn-primary">
-  Move to Next Session
-</button> -->
-
-
+   <div class="card">
+    <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-3">
+      <div class="d-flex flex-wrap align-items-center gap-3">
+        <div class="d-flex align-items-center gap-2">
+          <span>Show</span>
+          <select id="showCount" class="form-select form-select-sm w-auto">
+            <option>10</option>
+            <option>15</option>
+            <option>20</option>
+          </select>
+        </div>
+        <div class="icon-field d-flex align-items-center">
+          <input type="text" id="searchInput" class="form-control form-control-sm w-auto" placeholder="Search">
+          <span class="icon ms-2"><iconify-icon icon="ion:search-outline"></iconify-icon></span>
+        </div>
       </div>
+      <div class="d-flex flex-wrap align-items-center gap-3">
+        <select id="classFilter" class="form-select form-select-sm w-auto">
+          <option>Classes</option>
+                  <option>Pre Nusery</option>
+                  <option>Nusery 1</option>
+                  <option>Nusery 2</option>
+                  <option>Prep-Grade</option>
+                  <option>Grade 1</option>
+                  <option>Grade 2</option>
+                  <option>Grade 3</option>
+                  <option>Grade 4</option>
+                  <option>Grade 5</option>
+                  <option>JSS 1</option>
+                  <option>JSS 2</option>
+                  <option>JSS 3</option>
+                  <option>SSS 1</option>
+                  <option>SSS 2</option>
+                  <option>SSS 3</option>
+        </select>
+
+        <select id="termFilter" class="form-select form-select-sm w-auto">
+          <option>Terms</option>
+          <option>First Term</option>
+          <option>Second Term</option>
+          <option>Third Term</option>
+        </select>
+
+      
+
+        <a href="broadsheet.html" class="btn btn-sm btn-primary"><i class="ri-table-line"></i> View Broadsheet</a>
+      </div>
+
+   <!-- Button to download all results -->
+<button id="printAllBtn" class="btn btn-sm btn-warning">
+    <i class="ri-printer-line"></i> Download Broadsheet Result
+</button>
     </div>
 
-    <div class="card-body py-40">
-      <div class="row justify-content-center" id="invoice">
-        <div class="col-lg-8">
-          <div class="shadow-4 border radius-8">
+    <!-- Container for temporary PDF generation -->
+<div id="pdfContainer" style="position:absolute; left:-9999px; top:-9999px;"></div>
 
-            <!-- School Header -->
-            <div class="p-20 border-bottom text-center">
-              <img src="assets/images/PARAKLETOS INTERNATIONAL SCHOOL LOGO.jpeg" alt="image" width="90">
-              <h3 class="text-xl mt-2">PARAKLETOS INTERNATIONAL SCHOOL</h3>
-              <p>ADDRESS: NO 2 BISI BANKOLE STREET OKE ONITEA, OSOGBO</p>
-              <p>EMAIL: Parakletosschool2004@gmail.com </p>
-              <p>NUMBER: 08033881702 </p>
-              <p class="text-sm text-secondary-light mb-0">Academic Session <span id="sessionYear">2025 - 2026</span></p>
-            </div>
+    <div class="card-body">
+      <table class="table table-bordered table-sm" id="broadsheetTable" style="overflow-x:auto; max-width:100%;">
+  <thead id="broadsheetHead">
+    <!-- Subjects will be injected dynamically -->
+  </thead>
+  <tbody id="broadsheetBody">
+    <!-- Student rows will be injected dynamically -->
+  </tbody>
+</table>
 
-           <!-- Student Info -->
-<div class="p-3">
-  <div class="row justify-content-between">
-    <div class="col-sm-6">
-      <table class="text-sm text-secondary-light">
-        <tbody>
-          <tr><td>Name</td><td class="ps-8">: <span id="studentName">Loading...</span></td></tr>
-          <tr><td>Gender</td><td class="ps-8">: <span id="studentGender">-</span></td></tr>
-          <tr><td>Class</td><td class="ps-8">: <span id="studentClass">-</span></td></tr>
-          <tr>
-            <td>Term</td>
-            <td class="ps-8">
-              : 
-              <select id="studentTerm" class="form-select form-select-sm d-inline w-auto">
-                <option value="First Term">First Term</option>
-           <!--  <option value="Second Term">Second Term</option>
-                <option value="Third Term">Third Term</option>
-                <option value="Yearly Summary">Yearly Summary</option> --> 
-              </select>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="col-sm-4 text-end">
-      <p class="text-sm mb-0"><strong>Date Issued:</strong> <span id="dateIssued"></span></p>
-      <p class="text-sm mb-0"><strong>Issued By:</strong> Parakletos Admin</p>
-    </div>
-  </div>
-</div>
-
-<div class="p-3" id="termTableContainer">
-  <div class="table-responsive scroll-sm">
-    <table class="table bordered-table text-sm" id="resultTable">
-      <thead>
-        <tr>
-          <th>SL.</th>
-          <th>SUBJECT</th>
-          <th>MARK OBTAINABLE (CA)</th>
-          <th>C.A 1</th>
-          <th>C.A 2</th>
-          <th>MARK OBTAINABLE (EXAM)</th>
-          <th>EXAM</th>
-          <th>TOTAL</th>
-          <th>GRADE</th>
-          <th>REMARK</th>
-          <th class="text-center">Action</th>
-        </tr>
-      </thead> 
-      <tbody id="resultTableBody"></tbody>
-    </table>
-  </div>
-</div>
-
-
-
-<!-- Yearly Summary Table (Initially Hidden) -->
-<div class="p-3" id="yearlySummaryContainer" style="display:none;">
-    <div class="table-responsive scroll-sm">
-        <table class="table bordered-table text-sm" id="yearlySummaryTable">
-            <thead>
-                <tr>
-                    <th>SL.</th>
-                    <th>SUBJECT</th>
-                    <th>1st Term</th>
-                    <th>2nd Term</th>
-                    <th>3rd Term</th>
-                    <th>Average</th>
-                    <th>GRADE</th>
-                    <th>REMARK</th>
-                </tr>
-            </thead>
-            <tbody id="yearlySummaryBody"></tbody>
-        </table>
-    </div>
-    <h6 class="text-md mb-2">Promotion Status</h6>
-    <label for="promotionStatus">Promotion Status :</label>
-    <textarea id="promotionStatus" class="form-control mb-2" rows="2" readonly></textarea>
-    <button type="button" id="printButton" class="btn btn-sm btn-primary mt-3" style="display:none;">
-        <iconify-icon icon="simple-line-icons:print" class="text-xl"></iconify-icon> Print Result
-    </button>
-</div>
-
-  <!-- Term Page Section -->
-<div class="p-3">
-    <button type="button" id="addRow" class="btn btn-sm btn-primary mt-3">
-        <iconify-icon icon="simple-line-icons:plus" class="text-xl"></iconify-icon> Add New Subject
-    </button>
-</div>
-
-<!-- Attendance Details Form -->
-<div class="p-3 mt-4 border-top">
-  <h6 class="text-md mb-3">Attendance Details</h6>
-  <div class="row">
-    <div class="col-md-4">
-      <label for="daysOpened" class="form-label">Days Opened:</label>
-      <input type="number" id="daysOpened" class="form-control" placeholder="Enter days opened" min="0">
-    </div>
-    <div class="col-md-4">
-      <label for="daysPresent" class="form-label">Days Present:</label>
-      <input type="number" id="daysPresent" class="form-control" placeholder="Enter days present" min="0">
-    </div>
-    <div class="col-md-4">
-      <label for="daysAbsent" class="form-label">Days Absent:</label>
-      <input type="number" id="daysAbsent" class="form-control" placeholder="Enter days absent" min="0">
     </div>
   </div>
-  <div class="row mt-3">
-    <div class="col-md-4">
-      <label for="studentHeight" class="form-label">Height (cm):</label>
-      <input type="number" id="studentHeight" class="form-control" placeholder="Enter height in cm" min="0">
-    </div>
-    <div class="col-md-4">
-      <label for="studentWeight" class="form-label">Weight (kg):</label>
-      <input type="number" id="studentWeight" class="form-control" placeholder="Enter weight in kg" min="0">
-    </div>
-    <div class="col-md-4">
-      <label for="nextTermDate" class="form-label">Next Term Begin At:</label>
-      <input type="date" id="nextTermDate" class="form-control">
-    </div>
-  </div>
-</div>
-
-<!-- Remarks -->
-<div class="p-3 mt-4 border-top">
-  <h6 class="text-md mb-2">Affective & Psychomotor Domain (A - E) grading scale</h6>
-  <label>Neatness</label>
-  <textarea id="Neatness" class="form-control mb-2" rows="1"></textarea>
-  <label>Politeness:</label>
-  <textarea id="Politeness" class="form-control" rows="1"></textarea>
-  <label>Punctuality:</label>
-  <textarea id="Punctuality" class="form-control" rows="1"></textarea>
-  <label>Responsibility:</label>
-  <textarea id="Responsibility" class="form-control" rows="1"></textarea>
-  <label>Teamwork:</label>
-  <textarea id="Teamwork" class="form-control" rows="1"></textarea>
-  <label>Leadership:</label>
-  <textarea id="Leadership" class="form-control" rows="1"></textarea>
-  <label>Helping:</label>
-  <textarea id="Helping" class="form-control" rows="1"></textarea>
-  <label>Honesty:</label>
-  <textarea id="Honesty" class="form-control" rows="1"></textarea>
-  <label>Participation:</label>
-  <textarea id="Participation" class="form-control" rows="1"></textarea>
-
-   <br />
-
-  <h6 class="text-md mb-2">School Remarks</h6>
-
-<label>Select Quick Remark:</label>
-<select id="remarkSelect" class="form-control mb-2">
-    <option value="">-- Choose a Remark --</option>
-    <!-- Behavioural Remarks -->
-    <option value="Shows excellent behaviour and maintains a positive attitude.">
-        Shows excellent behaviour and maintains a positive attitude.
-    </option>
-
-    <option value="Well-behaved and respectful; consistently follows instructions.">
-        Well-behaved and respectful; consistently follows instructions.
-    </option>
-
-    <option value="Generally well-behaved, with room for improved focus.">
-        Generally well-behaved, with room for improved focus.
-    </option>
-
-    <option value="Cooperative in class but needs to participate more actively.">
-        Cooperative in class but needs to participate more actively.
-    </option>
-
-    <option value="Respectful and calm, though can be easily distracted at times.">
-        Respectful and calm, though can be easily distracted at times.
-    </option>
-
-    <option value="Needs to improve attentiveness during lessons.">
-        Needs to improve attentiveness during lessons.
-    </option>
-
-    <option value="Requires guidance to stay focused and complete tasks.">
-        Requires guidance to stay focused and complete tasks.
-    </option>
-
-    <option value="Occasionally disruptive; needs to work on self-control.">
-        Occasionally disruptive; needs to work on self-control.
-    </option>
-
-    <option value="Frequently distracted and requires close supervision.">
-        Frequently distracted and requires close supervision.
-    </option>
-
-    <option value="Needs significant improvement in conduct and responsibility.">
-        Needs significant improvement in conduct and responsibility.
-    </option>
-
-    <option value="Shows leadership qualities and positively influences classmates.">
-    Shows leadership qualities and positively influences classmates.
-</option>
-
-<option value="Consistently completes tasks responsibly and independently.">
-    Consistently completes tasks responsibly and independently.
-</option>
-
-<option value="Polite and courteous, though needs to improve punctuality.">
-    Polite and courteous, though needs to improve punctuality.
-</option>
-
-<option value="Needs to put more effort into staying organized and prepared for class.">
-    Needs to put more effort into staying organized and prepared for class.
-</option>
-
-<option value="Struggles with maintaining attention and requires consistent behavioural monitoring.">
-    Struggles with maintaining attention and requires consistent behavioural monitoring.
-</option>
-
-</select>
-
-
-
-  <textarea id="classTeacherRemark" class="form-control mb-2" rows="2"></textarea>
-  <label>Proprietor’s Signature Remark:</label>
-<textarea id="headTeacherRemark" class="form-control" rows="2" readonly></textarea>
-
-</div>
 
   
-   <!-- ✅ Notification Modal -->
-  <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content radius-12">
-        <div class="modal-header">
-          <h5 class="modal-title" id="notificationModalLabel">Notification</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" id="notificationMessage"></div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
+  <div class="modal fade" id="notificationModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content p-3 text-center">
+        <h5 id="notificationMessage"></h5>
       </div>
     </div>
   </div>
-
-  <!-- ✅ Print Confirmation Modal -->
-<div class="modal fade" id="printConfirmModal" tabindex="-1" aria-labelledby="printConfirmModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content radius-12">
-      <div class="modal-header">
-        <h5 class="modal-title" id="printConfirmModalLabel">Confirm Print</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to print this student's result?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-        <button type="button" class="btn btn-primary" id="confirmPrintBtn">Yes, Print</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ✅ Move to Next Class Confirmation Modal -->
-<div class="modal fade" id="moveNextClassModal" tabindex="-1" aria-labelledby="moveNextClassModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content radius-12">
-      <div class="modal-header">
-        <h5 class="modal-title" id="moveNextClassModalLabel">Confirm Move to Next Class</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to move this student to the next class?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-        <button type="button" class="btn btn-primary" id="confirmMoveNextBtn">Yes, Move</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 
 
   <footer class="d-footer">
@@ -802,14 +588,58 @@
   <script src="assets/js/lib/file-upload.js"></script>
   <!-- audioplayer -->
   <script src="assets/js/lib/audioplayer.js"></script>
+
+<!-- jsPDF and html2canvas libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
   
   <!-- main js -->
   <script src="assets/js/app.js"></script>
-<script src="assets/js/invoice.js"></script>
-<script type="module" src="assets/js/result-add.js"></script>
-<script type="module" src="assets/js/result-save.js"></script>
+   <script type="module" src="assets/js/broadsheet.js"></script>
+
+  <!-- Include SheetJS -->
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+<script>
+document.getElementById("printAllBtn").addEventListener("click", () => {
+    const classVal = document.getElementById("classFilter").value;
+    const termVal = document.getElementById("termFilter").value;
+
+    const table = document.getElementById("broadsheetBody");
+    const headers = Array.from(document.querySelectorAll("#broadsheetHead th"))
+        .map(th => th.textContent.trim());
+
+    const rows = Array.from(table.querySelectorAll("tr")).map(tr => 
+        Array.from(tr.querySelectorAll("td")).map(td => td.textContent.trim())
+    );
+
+    // Combine headers and rows
+    const data = [headers, ...rows];
+
+    // Convert to worksheet
+    const ws = XLSX.utils.aoa_to_sheet(data);
+
+    // Optional: set column widths for readability
+    ws['!cols'] = headers.map(h => {
+        if(h.toLowerCase().includes("name")) return { wch: 25 };
+        if(h.toLowerCase().includes("student id")) return { wch: 15 };
+        if(h.toLowerCase().includes("position")) return { wch: 10 };
+        return { wch: Math.max(h.length + 2, 12) };
+    });
+
+    // Create workbook and append sheet
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Broadsheet");
+
+    // Save as Excel file
+    XLSX.writeFile(wb, `Broadsheet_${classVal}_${termVal}.xlsx`);
+});
+</script>
 
 
+   
 </body>
+
 
 </html>

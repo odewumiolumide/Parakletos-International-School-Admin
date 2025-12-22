@@ -1657,13 +1657,24 @@ resultTable.querySelectorAll("input, select").forEach(el => {
         `);
         printWindow.document.close();
 
-        printWindow.onload = () => {
-            setTimeout(() => printWindow.print(), 400);
-            printWindow.onafterprint = () => {
-                printWindow.close();
-                location.href = "result-list.html";
-            };
-        };
+       printWindow.onload = () => {
+    // Set file title (used by browser as PDF name)
+    const fileTitle = `${studentName.replace(/\s+/g, "_")}_${studentID}_CA_Result`;
+    printWindow.document.title = fileTitle;
+
+    // Give browser time to load styles
+    setTimeout(() => {
+        printWindow.focus();
+        printWindow.print();
+    }, 1500);
+
+    // After printing
+    printWindow.onafterprint = printWindow.onbeforeunload = () => {
+        printWindow.close();
+        location.href = "result-list.html";
+    };
+};
+
 
         setTimeout(() => { if (addSubjectBtn) addSubjectBtn.style.display = "inline-block"; }, 300);
     };
@@ -1752,10 +1763,29 @@ document.getElementById("PrintExamResult").addEventListener("click", () => {
     const studentWeight = document.getElementById("studentWeight")?.value || "-";
     const nextTermDate = document.getElementById("nextTermDate")?.value || "-";
 
-     // Calculate total and average
-const totals = Array.from(resultTable.querySelectorAll(".total-score")).map(td => parseInt(td.textContent) || 0);
-const totalScore = totals.reduce((a, b) => a + b, 0);
-const avgScore = totals.length ? (totalScore / totals.length).toFixed(2) : "0.00";
+   // ===============================
+// CALCULATE EXAM TOTAL & AVERAGE
+// ===============================
+
+let totalScore = 0;
+let subjectCount = 0;
+
+table.querySelectorAll("tbody tr").forEach(tr => {
+    const examScore = parseFloat(tr.children[7].textContent) || 0; 
+    // column 7 already contains EXAM score in print mode
+
+    totalScore += examScore;
+    subjectCount++;
+});
+
+// Maximum exam marks (100 per subject)
+const maxExamScore = subjectCount * 100;
+
+// Correct average percentage
+const avgScore = maxExamScore
+    ? ((totalScore / maxExamScore) * 100).toFixed(2)
+    : "0.00";
+
 
 // -----------------------------
 // Set Head Teacher Remark dynamically
@@ -2119,13 +2149,24 @@ document.getElementById("headTeacherRemark").value = headRemarkAuto;
         `);
         printWindow.document.close();
 
-        printWindow.onload = () => {
-            setTimeout(() => printWindow.print(), 400);
-            printWindow.onafterprint = () => {
-                printWindow.close();
-                location.href = "result-list.html";
-            };
-        };
+      printWindow.onload = () => {
+    // Set file title (used by browser as PDF name)
+    const fileTitle = `${studentName.replace(/\s+/g, "_")}_${studentID}_Exam_Result`;
+    printWindow.document.title = fileTitle;
+
+    // Give browser time to load styles
+    setTimeout(() => {
+        printWindow.focus();
+        printWindow.print();
+    }, 1500);
+
+    // After printing
+    printWindow.onafterprint = printWindow.onbeforeunload = () => {
+        printWindow.close();
+        location.href = "result-list.html";
+    };
+};
+
 
         setTimeout(() => { if (addRowBtn) addRowBtn.style.display = "inline-block"; }, 300);
     };
