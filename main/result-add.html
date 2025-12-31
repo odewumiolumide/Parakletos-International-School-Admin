@@ -581,20 +581,23 @@
 <!-- Attendance Details Form -->
 <div class="p-3 mt-4 border-top">
   <h6 class="text-md mb-3">Attendance Details</h6>
-  <div class="row">
+  <div class="row g-3">
     <div class="col-md-4">
       <label for="daysOpened" class="form-label">Days Opened:</label>
-      <input type="number" id="daysOpened" class="form-control" placeholder="Enter days opened" min="0">
+      <input type="number" id="daysOpened" class="form-control" value="118" readonly>
     </div>
     <div class="col-md-4">
       <label for="daysPresent" class="form-label">Days Present:</label>
-      <input type="number" id="daysPresent" class="form-control" placeholder="Enter days present" min="0">
+      <input type="number" id="daysPresent" class="form-control" min="0" placeholder="Enter days present">
     </div>
     <div class="col-md-4">
       <label for="daysAbsent" class="form-label">Days Absent:</label>
-      <input type="number" id="daysAbsent" class="form-control" placeholder="Enter days absent" min="0">
+      <input type="number" id="daysAbsent" class="form-control" min="0" placeholder="Enter days absent">
     </div>
   </div>
+  <div id="attendanceMessage" class="mt-2 fw-bold"></div>
+</div>
+
   <div class="row mt-3">
     <div class="col-md-4">
       <label for="studentHeight" class="form-label">Height (cm):</label>

@@ -617,27 +617,46 @@ attendanceInputs.forEach(id => {
   });
 });
 
-// Attendance calculation: Days Opened = Present + Absent
 const daysOpenedInput = document.getElementById("daysOpened");
 const daysPresentInput = document.getElementById("daysPresent");
 const daysAbsentInput = document.getElementById("daysAbsent");
+const messageDiv = document.getElementById("attendanceMessage");
 
+// Limit input to max 3 digits
+function limitInputLength(e) {
+  if (e.target.value.length > 3) {
+    e.target.value = e.target.value.slice(0, 3);
+  }
+}
+
+// Validate attendance only if both fields have values
 function validateAttendance() {
   const opened = parseInt(daysOpenedInput.value) || 0;
   const present = parseInt(daysPresentInput.value) || 0;
   const absent = parseInt(daysAbsentInput.value) || 0;
 
-  if (opened !== (present + absent)) {
-    daysOpenedInput.setCustomValidity("Days Opened must equal Days Present + Days Absent");
-    daysOpenedInput.reportValidity();
+  if (daysPresentInput.value === "" || daysAbsentInput.value === "") {
+    messageDiv.textContent = "";
+    return;
+  }
+
+  if (present + absent === opened) {
+    messageDiv.textContent = "Attendance is correct ✅";
+    messageDiv.style.color = "green";
   } else {
-    daysOpenedInput.setCustomValidity("");
+    messageDiv.textContent = "Incorrect input! Days Present + Days Absent must equal Days Opened ❌";
+    messageDiv.style.color = "red";
   }
 }
 
-[daysOpenedInput, daysPresentInput, daysAbsentInput].forEach(input => {
-  input.addEventListener("input", validateAttendance);
+// Event listeners
+[daysPresentInput, daysAbsentInput].forEach(input => {
+  input.addEventListener("input", () => {
+    limitInputLength({ target: input });  // enforce 3-digit max
+    validateAttendance();                 // auto-validate on typing
+  });
 });
+
 
 // ---------------------------
 // Affective & Psychomotor Domain Validation
