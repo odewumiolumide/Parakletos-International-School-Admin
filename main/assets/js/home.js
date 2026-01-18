@@ -3,17 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebas
 
   // ✅ Firebase Configurations
   const databases = {
-    classes: {
-      config: {
-        apiKey: "AIzaSyB-Oh8Ux2EGY_fQLzPhnNnXBjsuN8Ojw-8",
-  authDomain: "parakletos-subjects.firebaseapp.com",
-  projectId: "parakletos-subjects",
-  storageBucket: "parakletos-subjects.firebasestorage.app",
-  messagingSenderId: "186963551802",
-  appId: "1:186963551802:web:9e4a400b9fe911a7dcf703"
-      },
-      node: "Classes"
-    },
+    
     students: {
       config: {
          apiKey: "AIzaSyBZMWQcbpd7_dC9qS_C3QWk0P8xT5c8050",
@@ -39,24 +29,21 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebas
   };
 
   // ✅ Initialize Firebase Apps
-  const classApp = initializeApp(databases.classes.config, "classApp");
+  
   const studentApp = initializeApp(databases.students.config, "studentApp");
   const staffApp = initializeApp(databases.staff.config, "staffApp");
 
-  const classDB = getDatabase(classApp);
+ 
   const studentDB = getDatabase(studentApp);
   const staffDB = getDatabase(staffApp);
 
   // ✅ Get DOM Elements
-  const classCount = document.getElementById("classCount");
+ 
   const studentCount = document.getElementById("studentCount");
   const staffCount = document.getElementById("staffCount");
   const resultCount = document.getElementById("resultCount");
 
-  // ✅ Real-time Listeners
-  onValue(ref(classDB, "Classes"), (snapshot) => {
-    classCount.textContent = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
-  });
+ 
 
   onValue(ref(studentDB, "Students"), (snapshot) => {
     if (snapshot.exists()) {
