@@ -38,6 +38,25 @@ if (phoneInput) {
   });
 }
 
+// ===============================
+// 🔒 STUDENT YEAR - NO FUTURE DATE
+// ===============================
+const studentYearInput = document.getElementById("studentYear");
+
+if (studentYearInput) {
+  // Set max date to today
+  const today = new Date().toISOString().split("T")[0];
+  studentYearInput.setAttribute("max", today);
+
+  studentYearInput.addEventListener("change", function () {
+    if (this.value > today) {
+      this.value = "";
+      alert("⚠️ Future dates are not allowed.");
+    }
+  });
+}
+
+
 // ----------------------
 // 🎓 Handle Student Registration
 // ----------------------

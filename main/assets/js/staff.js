@@ -20,6 +20,68 @@ const firebaseConfig = {
   const form = document.querySelector("#exampleModal form");
   const tableBody = document.querySelector("#staffTableBody");
 
+  // ===============================
+// 🔒 BLOCK NUMBERS IN STAFF NAME
+// ===============================
+const staffNameInput = document.getElementById("staffname");
+if (staffNameInput) {
+  staffNameInput.addEventListener("input", function () {
+    this.value = this.value.replace(/[^A-Za-z\s]/g, "");
+  });
+}
+
+// ===============================
+// 📅 BLOCK FUTURE DATE (DATE ADDED)
+// ===============================
+const dateAddedInput = document.getElementById("dateadded");
+if (dateAddedInput) {
+  const today = new Date().toISOString().split("T")[0];
+  dateAddedInput.setAttribute("max", today);
+}
+
+// ===============================
+// 🔒 STAFF ROLE - TEXT ONLY
+// ===============================
+const staffRoleInput = document.getElementById("staffrole");
+if (staffRoleInput) {
+  staffRoleInput.addEventListener("input", function () {
+    this.value = this.value.replace(/[^A-Za-z\s]/g, "");
+  });
+}
+
+// ===============================
+// 📧 EMAIL FORMAT VALIDATION
+// ===============================
+const emailInput = document.getElementById("emailaddress");
+if (emailInput) {
+  emailInput.addEventListener("input", function () {
+    this.value = this.value.replace(/[^A-Za-z0-9@._-]/g, "");
+  });
+}
+
+// ===============================
+// 🔒 CLASS TAKEN - TEXT + MAX 2 NUMBERS
+// ===============================
+const classTakenInput = document.getElementById("classtaken");
+
+if (classTakenInput) {
+  classTakenInput.addEventListener("input", function () {
+    // Remove invalid characters (only letters, numbers, space)
+    this.value = this.value.replace(/[^A-Za-z0-9\s]/g, "");
+
+    // Limit numbers to max 2 digits total
+    const numbers = this.value.match(/\d/g);
+    if (numbers && numbers.length > 2) {
+      let count = 0;
+      this.value = this.value.replace(/\d/g, (digit) => {
+        count++;
+        return count <= 2 ? digit : "";
+      });
+    }
+  });
+}
+
+
   // 🧾 Add New Staff
   form.addEventListener("submit", async (e) => {
     e.preventDefault();

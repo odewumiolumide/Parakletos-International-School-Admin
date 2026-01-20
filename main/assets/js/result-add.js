@@ -657,6 +657,24 @@ function validateAttendance() {
   });
 });
 
+// ===============================
+// 🔒 NEXT TERM DATE - NO PAST DATE
+// ===============================
+const nextTermDateInput = document.getElementById("nextTermDate");
+
+if (nextTermDateInput) {
+  // Set minimum date to today
+  const today = new Date().toISOString().split("T")[0];
+  nextTermDateInput.setAttribute("min", today);
+
+  nextTermDateInput.addEventListener("change", function () {
+    if (this.value < today) {
+      this.value = "";
+      alert("⚠️ Past dates are not allowed for next term.");
+    }
+  });
+}
+
 
 // ---------------------------
 // Affective & Psychomotor Domain Validation
@@ -2225,70 +2243,158 @@ document.getElementById("printButton").addEventListener("click", () => {
 <meta charset="UTF-8">
 <title>Student Result | Damotak International School</title>
 <style>
-body { font-family: "Segoe UI", "Calibri", sans-serif; margin: 30px; line-height: 1.6; color: #2c3e50; position: relative; background: #f7f9fc; }
-body::before { content: ""; position: fixed; top:50%; left:50%; width:750px; height:750px; background: url('assets/images/auth/Damotak Logo.png') no-repeat center center; background-size:60%; opacity:0.05; transform: translate(-50%, -50%); z-index:-1; }
-.school-logo { border: 3px solid #0047AB; border-radius: 12px; padding: 5px; width: 150px; height:auto; display:block; margin:20px auto; box-shadow:0 4px 8px rgba(0,0,0,0.2); }
-.header { text-align:center; margin-bottom:35px; position:relative; }
-.header h3 { margin:5px 0; color:#1c3d72; text-transform:uppercase; letter-spacing:1px; }
-.header p { margin:2px 0; font-size:13px; }
-.header::after { content:""; position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:80%; height:3px; background: linear-gradient(to right, #1c3d72, #2a4d69); border-radius:5px; }
-.col h4, .col ul { text-transform: uppercase; }
-.row { display:flex; gap:20px; flex-wrap:wrap; margin-bottom:25px; }
-.col { flex:1; min-width:250px; background:#fff; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.07); padding:15px 20px; }
-.col h4 { margin-bottom:8px; font-size:14px; text-transform:uppercase; color:#fff; background:#1c3d72; padding:5px 10px; border-radius:5px 5px 0 0; }
-.col ul { list-style:none; padding:10px 0 0 0; margin:0; }
-.col ul li { margin:4px 0; font-size:13px; }
-.col ul li strong { color:#1c3d72; }
-table { width:100%; border-collapse:collapse; margin-bottom:25px; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 2px 5px rgba(0,0,0,0.05); }
-th { background:#1c3d72; color:#fff; padding:6px; font-size:13px; text-align:center; }
-td { text-align:center; padding:6px; border-bottom:1px solid #eef2f7; font-size:13px; }
-tr:nth-child(even) td { background:#f9fbff; }
-.section-title { font-weight:700; margin:25px 0 10px 0; font-size:16px; color:#1c3d72; text-transform:uppercase; letter-spacing:0.5px; border-left:5px solid #1c3d72; padding-left:10px; }
-.signatures { display:flex; justify-content:space-between; margin-top:40px; }
-.sign { border-top:2px solid #1c3d72; width:45%; text-align:center; padding-top:8px; font-size:13px; color:#1c3d72; font-weight:600; }
-@media print { body { background:#fff; -webkit-print-color-adjust: exact; } @page { size:A4; margin:1cm; } }
- .signatures {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-}
+  body {
+    font-family: "Segoe UI", "Calibri", sans-serif;
+    background: #fff;
+    color: #1c1c1c;
+    margin: 30px;
+    line-height: 1.6;
+    position: relative;
+  }
 
-.sign {
+  /* Watermark */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 700px;
+    height: 700px;
+    background: url('assets/images/auth/para logo.jpeg') no-repeat center center;
+    background-size: 50%;
+    opacity: 0.05;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+  }
+
+  .school-logo {
+    width: 180px;            /* bigger logo */
+    height: auto;
+    display: block;
+    margin: 10px auto;
+    border: 4px solid #c8102e;
+    border-radius: 15px;
+    padding: 6px;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.25);
+    transform: scale(1.1);   /* prevents shrinking */
+    }
+
+  .header {
     text-align: center;
-}
+    margin-bottom: 35px;
+    position: relative;
+  }
 
-.signature-img {
+  .header img { width: 100px; margin-bottom: 10px; }
+  .header h3 { font-size: 26px;         /* larger bold heading */
+    font-weight: 900;        /* heavy bold */
+    color: #c8102e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* makes it stand out */
+    margin-top: 5px; }
+  .header p { margin: 2px 0; font-size: 13px; }
+
+  .header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 3px;
+    background: linear-gradient(to right, #c8102e, #000);
+    border-radius: 5px;
+  }
+
+  .row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 25px; }
+  .col {
+    flex: 1; min-width: 250px; background: #fff;
+    border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 15px 20px;
+  }
+  .col h4 { margin-bottom: 8px; font-size: 14px; text-transform: uppercase; color: #fff; background: #c8102e; padding: 5px 10px; border-radius: 5px 5px 0 0; }
+  .col ul { list-style: none; padding: 10px 0 0 0; margin: 0; }
+  .col ul li { margin: 4px 0; font-size: 13px; }
+  .col ul li strong { color: #c8102e; }
+
+  table {
+    width: 100%; border-collapse: collapse; margin-bottom: 25px;
+    background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+  th {
+    background: #c8102e; color: #fff; padding: 8px; font-size: 13px; text-align: center;
+  }
+  td {
+    text-align: center; padding: 8px; border-bottom: 1px solid #f0f0f0; font-size: 13px;
+  }
+  tr:nth-child(even) td { background: #fdfdfd; }
+  .grade-tick { color: #c8102e; font-size: 16px; }
+
+  .section-title {
+    font-weight: 700; margin: 25px 0 10px 0; font-size: 16px;
+    color: #c8102e; text-transform: uppercase; letter-spacing: 0.5px;
+    border-left: 5px solid #c8102e; padding-left: 10px;
+  }
+
+  .signatures { display: flex; justify-content: space-between; margin-top: 40px; }
+  .sign {
+    border-top: 2px solid #c8102e; width: 45%; text-align: center;
+    padding-top: 8px; font-size: 13px; color: #1c1c1c; font-weight: 600;
+  }
+  .signature-img {
     width: 80px;
     height: auto;
     display: block;
-    margin: 0 auto 5px auto; /* logo on top, small spacing */
-    opacity: 0.9;
-}
-
-.signature-line {
-    width: 150px;
-    height: 2px;
-    background: #000;
     margin: 0 auto 5px auto;
-}
-
-.signature-title {
+    opacity: 0.9;
+  }
+  .signature-title {
     font-size: 13px;
     font-weight: bold;
+    margin-top: 2px;
+  }
+
+  @media print {
+    body { background: #fff; -webkit-print-color-adjust: exact; }
+    @page { size: A4; margin: 1cm; }
+  }
+
+  @media print {
+  .school-logo {
+    transform: scale(1.3) !important; /* boost size in print */
+  }
+
+  .header h3 {
+    font-size: 30px !important;       /* bigger in print */
+    font-weight: 900 !important;
+  }
+
+  @page {
+    size: A4;
+    margin: 0.5cm;
+  }
 }
 
+  #resultTable td:nth-child(2),
+  #resultTable th:nth-child(2),
+  #resultTableBody input[name="subject"],
+  #resultTableBody select[name="subject"] {
+    text-transform: uppercase !important;
+  }
 
 </style>
 </head>
 <body>
 <div class="header">
-<img src="assets/images/auth/Damotak Logo.png" alt="School Logo" class="school-logo">
-<h3>Damotak International School</h3>
-<p>PRIMARY & JUNIOR SECONDARY : NEW OBA ROAD, ILE-IDANDE AREA, OKE-ONITEA</p>
-<p>JUNIOR SECONDARY & SENIOR SECONDARY : OFF AYEKALE LAROTIMELIHINE,SCHEME. OSOGBO.</p>
-<p>EMAIL: Damotakint@gmail.com </p>
-<p>NUMBERS: 08033880730 | 08082870544 | 08132687701 </p>
-<p><strong>Academic Session:</strong> ${sessionYear}</p>
+<div class="header">
+  <img src="assets/images/auth/para logo.jpeg" alt="School Logo" class="school-logo">
+  <br>
+  <h3>Parakletos International School</h3>
+  <p>No 2 Bisi Bankole Street Oke Onitea Osogbo</p>
+  <p>EMAIL: parakletosschool2004@gmail.com</p>
+  <p>NUMBERS: 08033881702</p>
+  <p><strong>Academic Session:</strong> ${sessionYear}</p>
 </div>
 
 <div class="row">
