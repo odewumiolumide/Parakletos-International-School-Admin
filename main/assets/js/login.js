@@ -21,15 +21,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// ----------------- LOGIN HANDLER -----------------
+// ================= ELEMENTS =================
 const loginForm = document.getElementById("loginForm");
 const modal = document.getElementById("errorModal");
 const closeModal = document.getElementById("closeModal");
+const modalMessage = document.getElementById("modalMessage");
+const loginBtn = document.getElementById("loginBtn");
 
 let failedAttempts = 0;
 const MAX_ATTEMPTS = 10;
 
-// Show green success text
+// Success message element
 const successBox = document.createElement("p");
 successBox.style.color = "green";
 successBox.style.textAlign = "center";
@@ -37,8 +39,15 @@ successBox.style.fontWeight = "600";
 successBox.style.marginTop = "15px";
 successBox.style.display = "none";
 successBox.textContent = "Login successful!";
-document.querySelector(".login-section").appendChild(successBox);
 
+
+const loginSection = document.querySelector(".login-section");
+if (loginSection) {
+  loginSection.appendChild(successBox);
+};
+
+
+// ================= LOGIN =================
 if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -46,74 +55,79 @@ if (loginForm) {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
 
-      loginBtn.disabled = true;
+    loginBtn.disabled = true;
     loginBtn.textContent = "Logging in...";
 
     try {
+      // Attempt login
       await signInWithEmailAndPassword(auth, email, password);
 
-      // Reset failed attempts
       failedAttempts = 0;
-
-
-      // Show green success message
       successBox.style.display = "block";
 
-      sessionStorage.setItem("adminLoggedIn", "true");
-
-       setTimeout(() => {
-        window.location.href = "admin-dashboard.html";
+      // Redirect to dashboard
+      setTimeout(() => {
+        window.location.replace("admin-dashboard.html");
       }, 1200);
+
     } catch (error) {
       failedAttempts++;
       loginBtn.disabled = false;
       loginBtn.textContent = "Sign In";
 
-      // Show modal with error message
+      // Show error modal
       modalMessage.textContent = `${error.message} (${failedAttempts}/${MAX_ATTEMPTS})`;
       modal.style.display = "flex";
 
-      // Lock user after 10 failed attempts
       if (failedAttempts >= MAX_ATTEMPTS) {
-        alert("Too many failed login attempts! You are temporarily locked out.");
+        alert("Too many failed login attempts! Try again in 5 minutes.");
         loginBtn.disabled = true;
-        setTimeout(() => { loginBtn.disabled = false; failedAttempts = 0; }, 5 * 60 * 1000); // 5 min lockout
+        setTimeout(() => { 
+          loginBtn.disabled = false; 
+          failedAttempts = 0; 
+        }, 5 * 60 * 1000); // 5 min lockout
       }
     }
   });
 }
 
-// ----------------- CLOSE MODAL -----------------
-if (closeModal) closeModal.addEventListener("click", () => modal.style.display = "none");
-window.addEventListener("click", (e) => { if (e.target === modal) modal.style.display = "none"; });
+// ================= CLOSE MODAL =================
+if (closeModal) {
+  closeModal.addEventListener("click", () => modal.style.display = "none");
+}
+window.addEventListener("click", (e) => {
+  if (e.target === modal) modal.style.display = "none";
+});
 
-// ----------------- REDIRECT LOGGED USERS -----------------
+// ================= REDIRECT LOGGED-IN USERS =================
 onAuthStateChanged(auth, (user) => {
   const page = window.location.pathname.split("/").pop().toLowerCase();
   if (user && page === "index.html") {
-    window.location.href = "admin-dashboard.html";
+    window.location.replace("admin-dashboard.html");
   }
 });
 
-// ----------------- AUTO LOGOUT -----------------
+// ================= INACTIVITY AUTO-LOGOUT =================
 const AUTO_LOGOUT_TIME = 10 * 60 * 1000; // 10 min
 let inactivityTimer;
 
-const currentPage = window.location.pathname.split("/").pop().toLowerCase();
-if (currentPage !== "index.html" && currentPage !== "") {
-  const resetTimer = () => {
-    clearTimeout(inactivityTimer);
-    inactivityTimer = setTimeout(autoLogout, AUTO_LOGOUT_TIME);
-  };
+const autoLogout = async () => {
+  try {
+    await signOut(auth);
+  } catch (err) {
+    console.error("Logout failed:", err);
+  }
+  alert("You have been logged out due to inactivity.");
+  window.location.replace("index.html");
+};
 
-  const autoLogout = () => {
-    sessionStorage.removeItem("adminLoggedIn");
-    signOut(auth).then(() => {
-      alert("You have been logged out due to inactivity.");
-      window.location.href = "index.html";
-    }).catch(() => { window.location.href = "index.html"; });
-  };
+const resetTimer = () => {
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(autoLogout, AUTO_LOGOUT_TIME);
+};
 
-  ["click", "mousemove", "keydown", "scroll"].forEach(evt => document.addEventListener(evt, resetTimer));
-  window.addEventListener("load", resetTimer);
-}
+// Reset inactivity timer on user activity
+["click", "mousemove", "keydown", "scroll"].forEach(evt =>
+  document.addEventListener(evt, resetTimer)
+);
+window.addEventListener("load", resetTimer);
