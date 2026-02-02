@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Result | Parakletos International School</title>
+ <link rel="icon" type="image/png" href="assets/images/auth/para logo.jpeg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  font-family: "Segoe UI", "Calibri", sans-serif;
+  background: #fff;
+  color: #1c1c1c;
+  margin: 20px;
+  line-height: 1.6;
+  position: relative;
+}
+body::before {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  background: url('assets/images/auth/para logo.jpeg') no-repeat center center;
+  background-size: 50%;
+  opacity: 0.05;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+.school-logo {
+  width: 160px;
+  display: block;
+  margin: 10px auto;
+  border: 3px solid #c8102e;
+  border-radius: 12px;
+  padding: 5px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+.header { text-align: center; margin-bottom: 25px; }
+.header h3 { font-size: 26px; font-weight: 900; color: #c8102e; text-transform: uppercase; }
+.header p { margin: 2px 0; font-size: 13px; }
+.row { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
+.col { flex: 1; min-width: 230px; background: #fff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 12px 15px; }
+.col h4 { margin-bottom: 6px; font-size: 14px; text-transform: uppercase; color: #fff; background: #c8102e; padding: 4px 8px; border-radius: 5px 5px 0 0; }
+.col ul { list-style: none; padding: 5px 0 0 0; margin: 0; }
+.col ul li { margin: 3px 0; font-size: 13px; }
+.col ul li strong { color: #c8102e; }
+
+table{width:100%;border-collapse:collapse;background:#fff;}
+th{background:#c8102e;color:#fff;padding:6px;font-size:13px;}
+td{text-align:center;padding:6px;font-size:13px;border-bottom:1px solid #eee;}
+
+
+tr:nth-child(even) td { background: #fdfdfd; }
+.grade-tick { color: #c8102e; font-size: 14px; }
+.section-title {
+  font-weight: 700; margin: 20px 0 8px 0; font-size: 15px;
+  color: #c8102e; text-transform: uppercase; border-left: 4px solid #c8102e; padding-left: 8px;
+}
+
+.signatures { display: flex; justify-content: space-between; margin-top: 25px; }
+.sign { border-top: 2px solid #c8102e; width: 45%; text-align: center; padding-top: 6px; font-size: 13px; font-weight: 600; }
+.signature-img { width: 70px; margin: 0 auto 3px auto; display: block; }
+button { padding: 8px 14px; margin: 10px 5px 20px 0; border: none; background: #c8102e; color: #fff; cursor: pointer; border-radius: 5px; }
+button:hover { background: #a10a1f; }
+@media print {
+  body { background: #fff; -webkit-print-color-adjust: exact; }
+  .school-logo { transform: scale(1.2) !important; }
+  @page { size: A4; margin: 1cm; }
+}
+
+@media (max-width:768px){
+  .row { flex-direction: column; gap:10px; }
+  table { font-size:12px; }
+  th, td { padding:4px; }
+}
+@media (max-width:480px){
+  table { display:block; overflow-x:auto; white-space:nowrap; }
+  th, td { font-size:11px; padding:3px; }
+  .signatures { flex-direction:column; gap:10px; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <img src="assets/images/auth/para logo.jpeg" alt="School Logo" class="school-logo">
+  <h3>Parakletos International School</h3>
+  <p>No 2 Bisi Bankole Street Oke Onitea Osogbo</p>
+  <p>EMAIL: parakletosschool2004@gmail.com</p>
+  <p>NUMBERS: 08033881702</p>
+  <p><strong>Academic Session:</strong> <span id="sessionYear"></span> 2025 - 2026</p>
+</div>
+
+<div class="row">
+  <div class="col">
+    <h4>Student Details</h4>
+    <ul id="studentDetails"></ul>
+  </div>
+  <div class="col">
+    <h4>Attendance & Physical Record</h4>
+    <ul id="attendanceDetails"></ul>
+  </div>
+</div>
+
+<div class="section-title">Subjects and Scores</div>
+<table id="resultTable">
+  <thead>
+    <tr>
+       <th>S/N</th>
+  <th>Subject</th>
+  <th>CA1</th>
+  <th>CA2</th>
+  <th>Exam</th>
+  <th>Total</th>
+  <th>Grade</th>
+  <th>Remark</th>
+    </tr>
+  </thead>
+  <tbody id="resultTableBody"></tbody>
+</table>
+
+<div class="row">
+  <div class="col">
+    <h4>Total Average Score</h4>
+    <ul>
+      <li><strong>Total Marks:</strong> <span id="totalMarks">0</span></li>
+      <li><strong>Average Percentage:</strong> <span id="averageScore">0.00</span>%</li>
+    </ul>
+  </div>
+  <div class="col">
+    <h4>Remarks</h4>
+    <ul>
+      <li><strong>Class Teacher:</strong> <span id="classTeacherRemark"></span></li>
+       <li><strong>Proprietor’s / Head Teacher Remark:</strong> <span id="headTeacherRemark"></span></li>
+</ul>
+    </ul>
+  </div>
+</div>
+
+<div class="section-title">Affective & Psychomotor</div>
+<table id="affectiveTable">
+  <thead>
+    <tr><th>Area</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+  </thead>
+  <tbody id="affectiveBody"></tbody>
+</table>
+
+<div class="section-title">System Grading</div>
+<table>
+  <thead>
+    <tr>
+      <th>Grade</th>
+      <th>Score Range</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+     <tr><td>A</td><td>85-100</td><td>Excellent</td></tr>
+    <tr><td>B</td><td>75-84</td><td>Very Good</td></tr>
+    <tr><td>C</td><td>55-74</td><td>Good</td></tr>
+    <tr><td>D</td><td>40-54</td><td>Average</td></tr>
+    <tr><td>E</td><td>0-40</td><td>Needs Improvement</td></tr>
+  </tbody>
+</table>
+
+<br>
+<br>
+<div class="signatures">
+  <div class="sign"><img id="classTeacherSignatureImg" class="signature-img"> <br> <div>Class Teacher</div></div>
+  <div class="sign"><img id="proprietorSignatureImg" class="signature-img"> <br> <div>Proprietor</div></div>
+</div>
+
+<div>
+  <button id="logoutBtn">Logout</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+const student = JSON.parse(sessionStorage.getItem("studentData"));
+const resultData = JSON.parse(sessionStorage.getItem("resultData"));
+const term = sessionStorage.getItem("selectedTerm");
+
+if(!student || !resultData){ 
+  alert("No result found. Please login."); 
+  window.location.href="parnet-login.html"; 
+} else {
+  document.getElementById("sessionYear").textContent = resultData.sessionYear || "-";
+
+  // Student Details
+  const studentDetails = [
+    {label:"Name", value: student.name},
+    {label:"Gender", value: student.gender || "-"},
+    {label:"Class", value: student.studentClass || "-"},
+    {label:"Term", value: term},
+    {label:"Student ID", value: student.studentID},
+    {label:"Date Issued", value: resultData.dateIssued || "-"}
+  ];
+  const detailsUl = document.getElementById("studentDetails");
+  studentDetails.forEach(d=>{
+    const li=document.createElement("li"); 
+    li.innerHTML=`<strong>${d.label}:</strong> ${d.value}`;
+    detailsUl.appendChild(li); 
+  });
+
+  // Attendance
+  const attendance = [
+    {label:"Days Opened", value: resultData.daysOpened || "-"},
+    {label:"Days Present", value: resultData.daysPresent || "-"},
+    {label:"Days Absent", value: resultData.daysAbsent || "-"},
+    {label:"Height", value: resultData.studentHeight || "-"},
+    {label:"Weight", value: resultData.studentWeight || "-"},
+    {label:"Next Term Begins", value: resultData.nextTermDate || "-"}
+  ];
+  const attendanceUl = document.getElementById("attendanceDetails");
+  attendance.forEach(a=>{
+    const li=document.createElement("li"); 
+    li.innerHTML=`<strong>${a.label}:</strong> ${a.value}`;
+    attendanceUl.appendChild(li); 
+  });
+
+  // Signatures
+  document.getElementById("classTeacherSignatureImg").src = resultData.classTeacherSignature || "assets/images/auth/logo1.png";
+  document.getElementById("proprietorSignatureImg").src = resultData.headTeacherSignature || "assets/images/auth/logo1.png";
+
+ // Subjects
+let index=1, totals=[];
+for(const subject in resultData.Subjects){
+  const s=resultData.Subjects[subject];
+  const ca1=+s.ca1||0, ca2=+s.ca2||0, exam=+s.exam||0;
+  const total=+s.total||ca1+ca2+exam;
+  totals.push(total);
+
+  resultTableBody.innerHTML+=`
+  <tr>
+    <td>${index++}</td>
+    <td>${subject}</td>
+    <td>${ca1}</td>
+    <td>${ca2}</td>
+    <td>${exam}</td>
+    <td>${total}</td>
+    <td>${s.grade||"-"}</td>
+    <td>${s.remark||"-"}</td>
+  </tr>`;
+}
+
+  // Calculate total and average
+  const totalScore = totals.reduce((a,b)=>a+b,0);
+  const avgScore = totals.length ? (totalScore / totals.length).toFixed(2) : 0;
+  document.getElementById("totalMarks").textContent = totalScore;
+  document.getElementById("averageScore").textContent = avgScore;
+
+  // Class Teacher Remark
+  document.getElementById("classTeacherRemark").textContent = resultData.classTeacherRemark || "-";
+
+  // Head Teacher / Proprietor Remark dynamically (must come AFTER avgScore is calculated)
+  let headRemarkAuto = "-";
+  if(avgScore >= 75) headRemarkAuto = "Outstanding achievement! Keep up the excellent work and continue striving for success.";
+  else if(avgScore >= 60) headRemarkAuto = "Very good performance. Well done! Maintain this effort to reach higher goals.";
+  else if(avgScore >= 50) headRemarkAuto = "Good performance. Keep working consistently to improve further.";
+  else if(avgScore >= 40) headRemarkAuto = "Satisfactory performance. There is room for improvement with more focus and effort.";
+  else headRemarkAuto = "Performance needs attention. Extra effort and dedication are recommended to improve in the next term.";
+
+  document.getElementById("headTeacherRemark").textContent = headRemarkAuto;
+
+  // Affective
+  const affectiveAreas = ["Neatness","Politeness","Punctuality","Responsibility","Teamwork","Leadership","Helping"];
+  const affectiveBody = document.getElementById("affectiveBody");
+  affectiveAreas.forEach(area=>{
+    const grade = resultData[area] || "-";
+    const tr = document.createElement("tr");
+    tr.innerHTML=`<td>${area}</td>
+      <td class="grade-tick">${grade=='A'?'✔️':''}</td>
+      <td class="grade-tick">${grade=='B'?'✔️':''}</td>
+      <td class="grade-tick">${grade=='C'?'✔️':''}</td>
+      <td class="grade-tick">${grade=='D'?'✔️':''}</td>
+      <td class="grade-tick">${grade=='E'?'✔️':''}</td>`;
+    affectiveBody.appendChild(tr);
+  });
+}
+
+// Logout
+document.getElementById("logoutBtn").addEventListener("click",()=>{
+  sessionStorage.clear();
+  window.location.href="parnet-login.html";
+});
+
+</script>
+
+</body>
+</html>

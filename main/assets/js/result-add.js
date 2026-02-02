@@ -361,7 +361,6 @@ const defaultSubjects = {
 
   basic5: [
     "Mathematics",
-    "Mathematics",
     "English Studies",
     "Quantitative Reasoning",
     "Verbal Reasoning",
@@ -460,11 +459,11 @@ function addSubjectRow(subject = "", ca1 = "", ca2 = "", exam = "", total = "0",
 
       <td><input type="number" class="form-control mark-ca" value="50" readonly></td>
 
-      <td><input type="number" class="form-control ca-input" value="${ca1}" min="0" max="50" ${readOnly ? "readonly" : ""}></td>
-      <td><input type="number" class="form-control ca-input" value="${ca2}" min="0" max="50" ${readOnly ? "readonly" : ""}></td>
+      <td><input type="number" class="form-control ca-input" value="${ca1}" min="0" max="50" : ""}></td>
+      <td><input type="number" class="form-control ca-input" value="${ca2}" min="0" max="50" : ""}></td>
 
       <td><input type="number" class="form-control mark-exam" value="100" readonly></td>
-      <td><input type="number" class="form-control exam-input" value="${exam}" min="0" max="100" ${readOnly ? "readonly" : ""}></td>
+      <td><input type="number" class="form-control exam-input" value="${exam}" min="0" max="100" : ""}></td>
 
       <td class="total-score">${total}</td>
       <td class="grade">${grade}</td>
@@ -791,14 +790,16 @@ async function loadPreviousResults() {
 document.getElementById("studentTerm").addEventListener("change", loadPreviousResults);
 window.addEventListener("load", () => setTimeout(loadPreviousResults, 200));
 
-
 // ---------------------------
-// Save Result (Updated for SS3 & Normal Classes)
+// Save Result (Professional & Edit-Friendly, Flat resultData)
 // ---------------------------
 document.getElementById("saveResult").addEventListener("click", async () => {
-  const term = document.getElementById("studentTerm").value.trim();
-  const classTeacherRemark = document.getElementById("classTeacherRemark").value.trim();
-  const headTeacherRemark = document.getElementById("headTeacherRemark").value.trim();
+  try {
+    const term = document.getElementById("studentTerm").value.trim();
+    const classTeacherRemark = document.getElementById("classTeacherRemark").value.trim();
+    const headTeacherRemark = document.getElementById("headTeacherRemark").value.trim();
+
+    // Behaviour and other assessment fields
   const Neatness = document.getElementById("Neatness").value.trim();
   const Politeness = document.getElementById("Politeness").value.trim();
   const Punctuality = document.getElementById("Punctuality").value.trim();
@@ -815,35 +816,36 @@ document.getElementById("saveResult").addEventListener("click", async () => {
   const studentWeight = document.getElementById("studentWeight").value.trim();
   const nextTermDate = document.getElementById("nextTermDate").value.trim();
 
-  const subjects = [];
-  tbody.querySelectorAll("tr").forEach(tr => {
-    const subjectInput = tr.querySelector(".subject-input");
-    const examInput = tr.querySelector(".exam-input");
-    const caInputs = tr.querySelectorAll(".ca-input");
+    // ---------------------------
+    // Collect subjects dynamically
+    // ---------------------------
+    const subjects = [];
+    tbody.querySelectorAll("tr").forEach(tr => {
+      const subjectInput = tr.querySelector(".subject-input");
+      if (!subjectInput) return;
 
-    const subject = subjectInput ? subjectInput.value.trim() : "";
-    const exam = examInput ? parseInt(examInput.value) || 0 : 0;
+      const subject = subjectInput.value.trim();
+      if (!subject) return; // skip empty subjects
 
-    // Only take CA values if they exist (normal classes)
-    const ca1 = caInputs.length > 0 ? parseInt(caInputs[0].value) || 0 : 0;
-    const ca2 = caInputs.length > 1 ? parseInt(caInputs[1].value) || 0 : 0;
+      const examInput = tr.querySelector(".exam-input");
+      const caInputs = tr.querySelectorAll(".ca-input");
 
-    const total = ca1 + ca2 + exam;
-    const grade = tr.querySelector(".grade")?.textContent || "-";
-    const remark = tr.querySelector(".remark")?.textContent || "-";
+      const ca1 = caInputs.length > 0 ? parseInt(caInputs[0].value) || 0 : 0;
+      const ca2 = caInputs.length > 1 ? parseInt(caInputs[1].value) || 0 : 0;
+      const exam = examInput ? parseInt(examInput.value) || 0 : 0;
 
-    // Save row if editable or SS3 (even though SS3 has no CA)
-    if (subject && (!subjectInput.readOnly || isSS3)) {
+      const total = ca1 + ca2 + exam;
+      const grade = tr.querySelector(".grade")?.textContent || "-";
+      const remark = tr.querySelector(".remark")?.textContent || "-";
+
       subjects.push({ subject, ca1, ca2, exam, total, grade, remark });
-    }
-  });
+    });
 
-  if (!subjects.length && !classTeacherRemark.length) {
-    return showNotification("⚠️ Add at least one new subject or comment before saving.", false);
-  }
-
-  const resultData = {
-    studentID,
+    // ---------------------------
+    // Prepare result object (flat structure)
+    // ---------------------------
+    const resultData = {
+       studentID,
     term,
     classTeacherRemark,
     headTeacherRemark,
@@ -864,17 +866,25 @@ document.getElementById("saveResult").addEventListener("click", async () => {
     nextTermDate,
     dateIssued: new Date().toLocaleDateString(),
     subjects
-  };
+    };
 
-  try {
+    // ---------------------------
+    // Save / update result
+    // ---------------------------
     const res = await saveResult(studentID, term, resultData);
+
     showNotification(res.message, res.success);
-    if (res.success) setTimeout(loadPreviousResults, 400);
+
+    if (res.success) {
+      setTimeout(loadPreviousResults, 400);
+    }
+
   } catch (err) {
-    console.error(err);
+    console.error("🔥 Failed to save result:", err);
     showNotification("⚠️ Failed to save result: " + err.message, false);
   }
 });
+
 
 // ---------------------------
 // All Result To Print Result Function (Auto Print After 2s + Dynamic File Name)

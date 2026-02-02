@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>  Parakletos International School | Generate Class Token</title>
+<link rel="icon" type="image/png" href="assets/images/auth/para logo.jpeg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --primary:#c8102e;
+  --primary-dark:#a10a1f;
+  --bg:#f3f4f6;
+}
+
+*{box-sizing:border-box}
+
+body{
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(135deg,#f7f7f7,#ececec);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0;
+}
+
+.card{
+  width:100%;
+  max-width:420px;
+  background:#fff;
+  border-radius:18px;
+  box-shadow:0 25px 60px rgba(0,0,0,.2);
+  overflow:hidden;
+}
+
+.card-header{
+  background:linear-gradient(135deg,var(--primary),#b95157);
+  color:#fff;
+  padding:22px;
+  text-align:center;
+}
+
+.card-header h3{
+  margin:0;
+  font-size:20px;
+  font-weight:700;
+}
+
+.card-body{
+  padding:25px;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:6px;
+  color:#444;
+}
+
+input, select{
+  width:100%;
+  padding:13px 14px;
+  border-radius:10px;
+  border:1px solid #ddd;
+  font-size:15px;
+  margin-bottom:18px;
+}
+
+input:focus, select:focus{
+  outline:none;
+  border-color:var(--primary);
+}
+
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  background:linear-gradient(135deg,var(--primary),#b95157);
+  color:#fff;
+  transition:.2s;
+}
+
+button:hover{
+  background:linear-gradient(135deg,var(--primary-dark),#8f0a1c);
+}
+
+.output{
+  margin-top:18px;
+  padding:14px;
+  border-radius:10px;
+  background:#f9f9f9;
+  border:1px dashed var(--primary);
+  text-align:center;
+  font-size:14px;
+  font-weight:600;
+  color:#333;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  background:linear-gradient(135deg,var(--primary),#b95157);
+  color:#fff;
+  transition:.2s;
+  margin-bottom:10px;
+}
+
+button:hover{
+  background:linear-gradient(135deg,var(--primary-dark),#8f0a1c);
+}
+
+.pin{
+  font-size:22px;
+  letter-spacing:2px;
+  color:var(--primary);
+  margin-top:6px;
+}
+
+.link-button{
+  background:#888 !important;
+}
+
+.footer{
+  text-align:center;
+  font-size:11px;
+  color:#888;
+  margin-top:18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <h3>Generate Class Result PIN</h3>
+  </div>
+
+  <div class="card-body">
+    <label for="class">Class</label>
+    <input id="class" placeholder="e.g. Primary 3">
+
+    <label for="term">Term</label>
+    <select id="term">
+      <option>First Term</option>
+      <option>Second Term</option>
+      <option>Third Term</option>
+    </select>
+
+    <button onclick="generatePin()">Generate PINs</button>
+
+    <div id="output" class="output" style="display:none"></div>
+
+       <!-- Navigation buttons -->
+    <button class="link-button" onclick="goDashboard()">Back to Dashboard</button>
+    <button class="link-button" onclick="viewPins()">View PINs Table</button>
+
+    <div class="footer">© 2026 PARAKLETOS INTERNATIONAL SCHOOL. ALL RIGHTS RESERVED</div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyBqBTuNUD2pf2XUVnhKH9t7PyVSmQtD4c4",
+  databaseURL: "https://parakletos-result-default-rtdb.firebaseio.com"
+});
+
+const db = getDatabase(app);
+
+window.generatePin = async function () {
+  const cls = document.getElementById("class").value.trim();
+  const term = document.getElementById("term").value;
+
+  if (!cls) {
+    alert("Enter a Class to Generate a PIN");
+    return;
+  }
+
+  const pin = Math.floor(100000 + Math.random() * 900000).toString();
+
+  await set(ref(db, `ClassPins/${term}/${cls}`), {
+    pin,
+    createdAt: Date.now()
+  });
+
+  const output = document.getElementById("output");
+  output.style.display = "block";
+  output.innerHTML = `
+    PINs generated for <strong>${cls}</strong> (${term})
+    <div class="pin">${pin}</div>
+  `;
+};
+
+// Make navigation functions global
+window.goDashboard = function() {
+  window.location.href = "admin-dashboard.html";
+}
+
+window.viewPins = function() {
+  window.location.href = "class-pins-table.html";
+}
+</script>
+
+</body>
+</html>
