@@ -7,162 +7,216 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+:root {
+  --primary: #c8102e;
+  --secondary: #b95157;
+  --bg-light: #f6f7fb;
+  --text-dark: #333;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: "Segoe UI", sans-serif;
-  background: linear-gradient(135deg, #c8102e, #b95157);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
-.login-box {
+/* Main Card */
+.portal-card {
   background: #fff;
-  max-width: 440px;
   width: 100%;
-  padding: 35px;
-  border-radius: 18px;
-  box-shadow: 0 25px 60px rgba(0,0,0,.25);
+  max-width: 460px;
+  border-radius: 20px;
+  padding: 35px 30px 30px;
+  box-shadow: 0 30px 70px rgba(0,0,0,.25);
+  animation: fadeIn .6s ease;
 }
 
-.login-box h3 {
+/* Header */
+.portal-header {
   text-align: center;
-  color: #c8102e;
+  margin-bottom: 25px;
 }
 
-.login-box input, select, button {
+.portal-header img {
+  width: 70px;
+  margin-bottom: 10px;
+}
+
+.portal-header h2 {
+  margin: 0;
+  color: var(--primary);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.portal-header p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Form */
+.form-group {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+input, select {
   width: 100%;
   padding: 14px;
-  margin-bottom: 14px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
   font-size: 15px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #fafafa;
+  outline: none;
+  transition: all .3s ease;
 }
 
+input:focus,
+select:focus {
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(200,16,46,.1);
+}
+
+/* Button */
 button {
-  background: linear-gradient(135deg,#c8102e,#b95157);
-  color: white;
+  width: 100%;
+  padding: 15px;
+  margin-top: 8px;
   border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   cursor: pointer;
-  font-weight: bold;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(200,16,46,.3);
 }
 
 button:disabled {
-  background: #999;
+  background: #aaa;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
-.footer {
+/* Footer */
+.portal-footer {
   text-align: center;
   font-size: 12px;
   color: #888;
+  margin-top: 25px;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .portal-card {
+    padding: 28px 22px;
+  }
+
+  .portal-header h2 {
+    font-size: 20px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="login-box">
-  <h3>Parent Result Portal</h3>
+<div class="portal-card">
 
-  <input id="studentID" placeholder="Student ID">
-  <input id="studentClass" placeholder="Class">
+  <div class="portal-header">
+    <img src="assets/images/auth/para logo.jpeg" alt="School Logo">
+    <h2>Parent Result Portal</h2>
+    <p>Secure access to your child’s academic results</p>
+  </div>
 
-  <select id="term">
-    <option value="">Select Term</option>
-    <option>First Term</option>
-    <option>Second Term</option>
-    <option>Third Term</option>
-  </select>
+  <div class="form-group">
+    <label for="studentID">Student ID</label>
+    <input id="studentID" placeholder="Enter Student ID">
+  </div>
 
-  <input id="pin" placeholder="Result PIN">
+  <div class="form-group">
+    <label for="studentClass">Academic Class</label>
+    <select id="studentClass" placeholder="e.g. Grade 1">
+      <option value="">Select Class</option>
+                  <option>Pre Nusery</option>
+                  <option>Nusery 1</option>
+                  <option>Nusery 2</option>
+                  <option>Prep-Grade</option>
+                  <option>Grade 1</option>
+                  <option>Grade 2</option>
+                  <option>Grade 3</option>
+                  <option>Grade 4</option>
+                  <option>Grade 5</option>
+                  <option>JSS 1</option>
+                  <option>JSS 2</option>
+                  <option>JSS 3</option>
+                  <option>SSS 1</option>
+                  <option>SSS 2</option>
+                  <option>SSS 3</option>
+    </select>
+  </div>
+
+
+  <div class="form-group">
+    <label for="term">Academic Term</label>
+    <select id="term">
+      <option value="">Select Term</option>
+      <option>First Term</option>
+      <option>Second Term</option>
+      <option>Third Term</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="pin">Result PIN</label>
+    <input id="pin" placeholder="Enter Result PIN">
+  </div>
 
   <button onclick="loginParent()" id="btn">View Result</button>
 
-  <div class="footer">© 2026 PARAKLETOS INTERNATIONAL SCHOOL. ALL RIGHTS RESERVED</div>
+  <div class="portal-footer">
+    © 2026 Parakletos International School<br>
+    All Rights Reserved
+  </div>
+
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-
-// STUDENT DB
-const studentApp = initializeApp({
-  apiKey: "AIzaSyBZMWQcbpd7_dC9qS_C3QWk0P8xT5c8050",
-  databaseURL: "https://parakletos-students-default-rtdb.firebaseio.com"
-}, "students");
-
-// RESULT DB
-const resultApp = initializeApp({
-  apiKey: "AIzaSyBqBTuNUD2pf2XUVnhKH9t7PyVSmQtD4c4",
-  databaseURL: "https://parakletos-result-default-rtdb.firebaseio.com"
-}, "results");
-
-const studentDb = getDatabase(studentApp);
-const resultDb  = getDatabase(resultApp);
-
-window.loginParent = async function () {
-  const btn = document.getElementById("btn");
-  btn.disabled = true;
-  btn.textContent = "Checking...";
-
-  const studentID = document.getElementById("studentID").value.trim();
-  const studentClass = document.getElementById("studentClass").value.trim();
-  const term = document.getElementById("term").value;
-  const pin = document.getElementById("pin").value.trim();
-
-  if (!studentID || !studentClass || !term || !pin) {
-    alert("Please fill all fields");
-    resetBtn();
-    return;
-  }
-
-  try {
-    // 1️⃣ Student check
-    const stuSnap = await get(ref(studentDb, `Students/${studentID}`));
-    if (!stuSnap.exists()) throw new Error("Invalid Student ID");
-
-    const student = { studentID, ...stuSnap.val() };
-
-    if (student.studentClass !== studentClass)
-      throw new Error("Student class does not match");
-
-    // 2️⃣ PIN check (class + term)
-    const pinRef = ref(resultDb, `ClassPins/${term}/${studentClass}`);
-    const pinSnap = await get(pinRef);
-
-    if (!pinSnap.exists())
-      throw new Error("PIN not set for this class and term");
-
-    if (pinSnap.val().pin !== pin)
-      throw new Error("Incorrect PIN");
-
-    // 3️⃣ Result check
-    const resultRef = ref(resultDb, `Results/${studentID}/${term}`);
-    const resultSnap = await get(resultRef);
-
-    if (!resultSnap.exists())
-      throw new Error("Result not yet available");
-
-    // 4️⃣ Save session
-    sessionStorage.setItem("studentData", JSON.stringify(student));
-    sessionStorage.setItem("resultData", JSON.stringify(resultSnap.val()));
-    sessionStorage.setItem("selectedTerm", term);
-
-    window.location.href = "parent-result.html";
-
-  } catch (err) {
-    alert(err.message);
-    resetBtn();
-  }
-};
-
-function resetBtn(){
-  const btn = document.getElementById("btn");
-  btn.disabled = false;
-  btn.textContent = "View Result";
-}
-</script>
+<script type="module" src="assets/js/parnet-login.js"></script>
 
 </body>
 </html>
