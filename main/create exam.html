@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> Parakletos International School | ADMIN PAGE  </title>
-
+  <title> Create Exam | Parakletos International School </title>
   <link rel="icon" type="image/png" href="assets/images/auth/para logo.jpeg">
   <!-- remix icon font css  -->
   <link rel="stylesheet" href="assets/css/remixicon.css">
@@ -39,6 +39,25 @@
   <!-- main css -->
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
+<style>
+  .option-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.question-card {
+  border: 1px dashed #d0d5ff;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  background: #fafbff;
+}
+
+.question-card { background: #fff; }
+
+</style>
 <body>
 
   <!-- Theme Customization Structure Start -->
@@ -170,7 +189,7 @@
       <li class="dropdown">
         <a href="javascript:void(0)">
           <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
-          <span>Dashboard</span>
+          <span>DASHBOARD</span>
         </a>
         <ul class="sidebar-submenu">
          
@@ -185,7 +204,7 @@
       <li class="dropdown">
         <a href="javascript:void(0)">
           <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
-          <span>Students</span>
+          <span>STUDENTS</span>
         </a>
         <ul class="sidebar-submenu">
 
@@ -202,13 +221,13 @@
       <li class="dropdown">
         <a href="javascript:void(0)">
           <iconify-icon icon="hugeicons:invoice-03" class="menu-icon"></iconify-icon>
-          <span>Result</span>
+          <span>RESULTS</span>
         </a>
         <ul class="sidebar-submenu">
           <li>
-            <a href="result-list.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Result List</a>
+            <a href="result-list.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>Result List</a>
           </li>
-
+         
           <li>
             <a href="broadsheet.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Broadsheet List</a>
           </li>
@@ -219,7 +238,7 @@
           </li>
         </ul>
       </li>
-
+      
       <li class="dropdown">
         <a href="javascript:void(0)">
           <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
@@ -242,17 +261,17 @@
           </li>
         </ul>
       </li>
-      
-      <li class="sidebar-menu-group-title">Staff Application</li>
+
+      <li class="sidebar-menu-group-title">Staff Role</li>
 
       <li class="dropdown">
         <a href="javascript:void(0)">
           <i class="ri-user-settings-line text-xl me-14 d-flex w-auto"></i>
-          <span>Staff Role</span>
+          <span> STAFF ROLES</span>
         </a>
         <ul class="sidebar-submenu">
           <li>
-            <a href="staff-role.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Staff Role</a>
+            <a href="staff-role.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Add Staff Role</a>
           </li>
           
         </ul>
@@ -264,7 +283,7 @@
       <li class="dropdown">
         <a href="javascript:void(0)">
           <iconify-icon icon="icon-park-outline:setting-two" class="menu-icon"></iconify-icon>
-          <span>Settings</span>
+          <span>SETTINGS</span>
         </a>
         <ul class="sidebar-submenu">
           <li>
@@ -277,10 +296,9 @@
   </div>
 </aside>
 <!-- Navbar Sections Ends -->
-
-
+ 
 <main class="dashboard-main">
-  <div class="navbar-header">
+    <div class="navbar-header">
   <div class="row align-items-center justify-content-between">
     <div class="col-auto">
       <div class="d-flex flex-wrap align-items-center gap-4">
@@ -327,7 +345,6 @@
                 <input class="form-check-input" type="radio" name="crypto" id="english">
               </div>
 
-              
             </div>
           </div>
         </div><!-- Language dropdown end -->
@@ -348,12 +365,14 @@
                 class="text-primary-600 fw-semibold text-lg w-40-px h-40-px rounded-circle bg-base d-flex justify-content-center align-items-center">0</span>
             </div>
 
+            <div class="max-h-400-px overflow-y-auto scroll-sm pe-4">
+
+            </div>
             <div class="text-center py-12 px-16">
               <a href="javascript:void(0)" class="text-primary-600 fw-semibold text-md">See All Message</a>
             </div>
           </div>
-        </div>
-        <!-- Message dropdown end -->
+        </div><!-- Message dropdown end -->
 
         <div class="dropdown">
           <button
@@ -418,9 +437,10 @@
                   href="view-profile.html">
                   <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon> My Profile</a>
               </li>
+              
               <li>
-                <a id="logoutBtn" class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3"
-                  href="">
+                <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3"
+                  href="" id="logoutBtn">
                   <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon> Log Out</a>
               </li>
             </ul>
@@ -430,11 +450,10 @@
     </div>
   </div>
 </div>
-
-  <div class="dashboard-main-body">
-
-    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-  <h6 class="fw-semibold mb-0">Dashboard</h6>
+    
+    <div class="dashboard-main-body">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
+  <h6 class="fw-semibold mb-0">Set New Questions for Exam</h6>
   <ul class="d-flex align-items-center gap-2">
     <li class="fw-medium">
       <a href="admin-dashboard.html" class="d-flex align-items-center gap-1 hover-text-primary">
@@ -443,119 +462,278 @@
       </a>
     </li>
     <li>-</li>
-    <li class="fw-medium">Home</li>
+    <li class="fw-medium">Create New  CBT Exam</li>
   </ul>
 </div>
 
-   <div class="row gy-4">
-  <div class="col-xxl-8">
-    <div class="row gy-4">
+        <div class="card h-100 p-0 radius-12">
+  <div class="card-body p-24">
+    <div class="row justify-content-center">
+      <div class="col-xxl-6 col-xl-8 col-lg-10">
+        <div class="card border">
+          <div class="card-body">
 
-      <!-- ✅ CLASSES -->
-<div class="col-xxl-4 col-sm-6">
-  <div class="card p-3 shadow-2 radius-8 border input-form-light h-100 bg-gradient-end-1">
-    <div class="card-body p-0">
-      <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-        <div class="d-flex align-items-center gap-2">
-          <span
-            class="mb-0 w-48-px h-48-px bg-primary-600 flex-shrink-0 text-white d-flex justify-content-center align-items-center rounded-circle h6 mb-0">
-            <iconify-icon icon="mingcute:user-follow-fill" class="icon"></iconify-icon>
-          </span>
-          <div>
-            <span class="mb-2 fw-medium text-secondary-light text-sm">Classes</span>
-            <h6 id="classCount" class="fw-semibold">9</h6>
-          </div>
+            <!-- ================= SUCCESS MESSAGE ================= -->
+<div id="successMsg" class="alert alert-success d-none mb-20">
+  Action completed successfully
+</div>
+
+           <h6 class="text-md text-primary-light mb-16">SET PARAMETERS FOR YOUR EXAM</h6>
+
+<!-- ================= SET TEST PARAMETERS ================= -->
+<form id="testForm">
+
+  <!-- Test Title -->
+  <div class="mb-20">
+    <label class="form-label fw-semibold text-primary-light text-sm mb-8">
+      Exam Title <span class="text-danger-600">*</span>
+    </label>
+    <input
+      type="text"
+      class="form-control radius-8"
+      id="testTitle"
+      placeholder="Enter Exam Title"
+      required
+    />
+  </div>
+
+  <!-- Class & Duration -->
+  <div class="row">
+    <div class="col-md-6 mb-20">
+      <label class="form-label fw-semibold text-primary-light text-sm mb-8">
+        Class <span class="text-danger-600">*</span>
+      </label>
+      <select class="form-control radius-8 form-select" id="testClass" required>
+        <option value="">Select Class</option>
+       <option>Pre Nusery</option>
+                  <option>Nusery 1</option>
+                  <option>Nusery 2</option>
+                  <option>Prep-Grade</option>
+                  <option>Grade 1</option>
+                  <option>Grade 2</option>
+                  <option>Grade 3</option>
+                  <option>Grade 4</option>
+                  <option>Grade 5</option>
+                  <option>JSS 1</option>
+                  <option>JSS 2</option>
+                  <option>JSS 3</option>
+                  <option>SSS 1</option>
+                  <option>SSS 2</option>
+                  <option>SSS 3</option>
+      </select>
+    </div>
+
+    <div class="col-md-6 mb-20">
+      <label class="form-label fw-semibold text-primary-light text-sm mb-8">
+        Duration (Minutes)
+      </label>
+      <input
+        type="number"
+        class="form-control radius-8"
+        id="testDuration"
+        placeholder="e.g 40"
+        required
+      />
+    </div>
+  </div>
+
+<div class="mb-3">
+  <label class="form-label">Subject *</label>
+  <select class="form-select" id="testSubject" required>
+    <option value="">Select Subject</option>
+    <option>Literacy</option>
+    <option>Numeracy</option>
+    <option>Health Habits</option>
+    <option>Social Habits</option>
+    <option>Pre-Science</option>
+    <option>Handwriting</option>
+     <option>Poem</option>
+      <option>Songs And Rhythms</option>
+       <option>Colouring/Drawing</option>
+        <option>Literacy (Letter Work)</option>
+        <option>Literacy (Language Domain)</option>
+        <option>Physical And Health Education</option>
+         <option>General Mathematics</option>
+          <option>English Language</option>
+        <option>Basic Science</option>
+        <option>Civic Education</option>
+        <option>Cultural And Creative Art</option>
+        <option>Personal Development</option>
+        <option>Dictation</option>
+        <option>Verbal Reasoning</option>
+        <option>Quantitative Reasoning</option>
+        <option>Social And Citizenship Studies</option>
+        <option>Computer Science</option>
+        <option>Home-Economics</option>
+        <option>Agricultural Science</option>
+        <option>Basic Tech</option>
+        <option>Phonics</option>
+         <option>Yoruba</option>
+          <option>Religion Studies</option>
+           <option>Nigerian History</option>
+            <option>Security</option>
+            <option>Entrepreneurship</option>
+            <option>Intermediate Science</option>
+            <option>Digital Technology</option>
+            <option>Economics</option>
+            <option>Commerce</option>
+            <option>Marketing</option>
+             <option>Finance & Accounting</option>
+              <option>Government</option>
+               <option>Literature in English</option>
+                <option>Geography</option>
+                 <option>Further Mathematics</option>
+                  <option>Physics</option>
+                  <option>Chemistry</option>
+                  <option>Biology</option>
+                  <option>Fashion</option>
+                  <option>Beauty</option>
+                  <option>Livestock</option>
+                   <option>Solar</option>
+                    <option>Horticulture</option>
+                     <option>Computer Hardware</option>
+                      <option>Christian Religious Studies</option>
+
+
+
+
+  </select>
+</div>
+
+
+  <!-- Options -->
+  <div class="row mb-20">
+    <div class="col-md-4">
+      <label class="text-sm fw-semibold">Random Questions</label>
+      <select class="form-control radius-8 form-select" id="randomQuestions">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      <label class="text-sm fw-semibold">Random Options</label>
+      <select class="form-control radius-8 form-select" id="randomOptions">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      <label class="text-sm fw-semibold">Show Score After Exam</label>
+      <select class="form-control radius-8 form-select" id="showScore">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="d-flex justify-content-center gap-3">
+    <button type="submit" class="btn btn-primary px-40">
+      SUBMIT EXAM TITLE
+    </button>
+    <button type="button" id="openQuestionForm" class="btn btn-outline-primary px-40" disabled>
+       SET QUESTIONS
+    </button>
+  </div>
+</form>
+
+<!-- ================= SET QUESTIONS ================= -->
+<div id="questionSection" class="mt-40 d-none">
+
+  <h6 class="text-md text-primary-light mb-16">SET QUESTIONS</h6>
+
+  <div class="mb-20">
+    <label class="form-label fw-semibold text-sm mb-8">Select Test</label>
+    <select id="testSelector" class="form-control radius-8 form-select">
+      <option value="">Select Exam Title</option>
+    </select>
+  </div>
+
+  <div id="questionsContainer"></div>
+
+  <div class="text-center mt-20">
+    <button id="addQuestionBtn" class="btn btn-outline-primary px-40">
+       ADD NEW QUESTION
+    </button>
+  </div>
+
+  <div class="text-center mt-20 d-flex justify-content-center gap-3">
+  <button id="saveDraftBtn" class="btn btn-secondary px-30">
+    SAVE AS DRAFT
+  </button>
+
+  <button id="publishTestBtn" class="btn btn-success px-30">
+    PUBLISH TEST
+  </button>
+
+  <button id="archiveTestBtn" class="btn btn-outline-danger px-30">
+    ARCHIVE
+  </button>
+</div>
+
+<!-- STATUS BADGE -->
+<div class="text-center mt-12">
+  <span id="testStatusBadge" class="badge bg-warning">
+    Status: Draft
+  </span>
+</div>
+
+  
+</div>
+
         </div>
       </div>
-       <p class="text-sm mb-0"> BASED ON REAL-TIME STUDENTS DATA</p>
     </div>
   </div>
 </div>
 
-<!-- ✅ STUDENTS -->
-<div class="col-xxl-4 col-sm-6">
-  <div class="card p-3 shadow-2 radius-8 border input-form-light h-100 bg-gradient-end-2">
-    <div class="card-body p-0">
-      <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-        <div class="d-flex align-items-center gap-2">
-          <span
-            class="mb-0 w-48-px h-48-px bg-success-main flex-shrink-0 text-white d-flex justify-content-center align-items-center rounded-circle h6">
-            <iconify-icon icon="mdi:school" class="icon"></iconify-icon>
-          </span>
-          <div>
-            <span class="mb-2 fw-medium text-secondary-light text-sm">Active Students</span>
-            <h6 id="studentCount" class="fw-semibold">0</h6>
-          </div>
-        </div>
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3">
+      <div class="modal-body text-center" id="successModalMsg"></div>
+      <div class="text-center mt-2">
+        <button class="btn btn-primary" data-bs-dismiss="modal">OK</button>
       </div>
-       <p class="text-sm mb-0"> BASED ON REAL-TIME STUDENTS DATA</p>
     </div>
   </div>
 </div>
 
-<!-- ✅ STAFF -->
-<div class="col-xxl-4 col-sm-6">
-  <div class="card p-3 shadow-2 radius-8 border input-form-light h-100 bg-gradient-end-3">
-    <div class="card-body p-0">
-      <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-        <div class="d-flex align-items-center gap-2">
-          <span
-            class="mb-0 w-48-px h-48-px bg-yellow text-white flex-shrink-0 d-flex justify-content-center align-items-center rounded-circle h6">
-            <iconify-icon icon="mdi:account-tie" class="icon"></iconify-icon>
-          </span>
-          <div>
-            <span class="mb-2 fw-medium text-secondary-light text-sm">Active Staff</span>
-            <h6 id="staffCount" class="fw-semibold">0</h6>
-          </div>
-        </div>
+<!-- Delete Question Modal -->
+<div class="modal fade" id="deleteQuestionModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3">
+      <div class="modal-body text-center">
+        Are you sure you want to delete this question?
       </div>
-       <p class="text-sm mb-0"> BASED ON REAL-TIME STAFF DATA</p>
-    </div>
-  </div>
-</div>
-
-<!-- ✅ RESULTS (replaces Subjects) -->
-<div class="col-xxl-4 col-sm-6">
-  <div class="card p-3 shadow-2 radius-8 border input-form-light h-100 bg-gradient-end-4">
-    <div class="card-body p-0">
-      <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
-        <div class="d-flex align-items-center gap-2">
-          <span
-            class="mb-0 w-48-px h-48-px bg-purple text-white flex-shrink-0 d-flex justify-content-center align-items-center rounded-circle h6">
-            <iconify-icon icon="mdi:file-chart-outline" class="icon"></iconify-icon>
-          </span>
-          <div>
-            <span class="mb-2 fw-medium text-secondary-light text-sm">Results</span>
-            <h6 id="resultCount" class="fw-semibold">0</h6>
-          </div>
-        </div>
+      <div class="text-center mt-2">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-danger" id="confirmDeleteQuestionBtn">Delete</button>
       </div>
-      <p class="text-sm mb-0"> BASED ON REAL-TIME STUDENTS DATA</p>
-    </div>
-  </div>
-</div>
     </div>
   </div>
 </div>
 
 
-        </div>
-      </div>
-    
-    
-    </div>
-  </div>
-  <footer class="d-footer">
+
+
+
+
+  
+    <footer class="d-footer">
   <div class="row align-items-center justify-content-between">
     <div class="col-auto">
       <p class="mb-0">© 2026 PARAKLETOS INTERNATIONAL SCHOOL. ALL RIGHTS RESERVED</p>
     </div>
     <div class="col-auto">
-      <p class="mb-0">Made by <span class="text-primary-600">DE-FLINTS INTERNATIONAL</span></p>
+      <p class="mb-0">Made by <span class="text-primary-600">DE-FLINTS</span></p>
     </div>
   </div>
 </footer>
-</main>
+  </main>
+  
   <!-- jQuery library js -->
   <script src="assets/js/lib/jquery-3.7.1.min.js"></script>
   <!-- Bootstrap js -->
@@ -576,12 +754,35 @@
   
   <!-- main js -->
   <script src="assets/js/app.js"></script>
-
-   <script type="module" src="assets/js/home.js"></script>
-   <script type="module" src="assets/js/adminauth.js"></script>
-    
-   </script>
   
+
+<script>
+    // ================== Image Upload Js Start ===========================
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#imagePreview').css('background-image', 'url('+e.target.result +')');
+                $('#imagePreview').hide();
+                $('#imagePreview').fadeIn(650);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#imageUpload").change(function() {
+        readURL(this);
+    });
+    // ================== Image Upload Js End ===========================
+</script>
+
+
+</script>
+
+
+<script type="module" src="assets/js/create-exam.js"></script>
+
+
+
 </body>
 
 </html>

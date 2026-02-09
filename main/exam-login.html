@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Exam Login | Parakletos International School CBT</title>
+<link rel="icon" type="image/png" href="assets/images/auth/para logo.jpeg">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root{
+  --primary:#7a1f2b;        /* Wine */
+  --secondary:#c53030;      /* Red accent */
+  --bg-soft:#fff5f6;        /* Soft wine white */
+  --text:#1f2937;
+  --border:#e5e7eb;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Nunito',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#7a1f2b,#ffffff);
+}
+
+/* MAIN CARD */
+.exam-wrapper{
+  width:95%;
+  max-width:1100px;
+  display:flex;
+  border-radius:18px;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:0 30px 70px rgba(122,31,43,.25);
+  animation:fadeIn .8s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* LEFT PANEL */
+.exam-info{
+  flex:1;
+  padding:60px;
+  position:relative;
+  background:linear-gradient(
+    135deg,
+    rgba(122,31,43,.15),
+    rgba(197,48,48,.10)
+  );
+  backdrop-filter:blur(18px);
+  border-right:3px solid var(--primary);
+}
+
+.exam-info::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at top left,
+      rgba(122,31,43,.30),
+      transparent 60%
+    );
+  pointer-events:none;
+}
+
+.exam-info h1{
+  font-size:2.2rem;
+  font-weight:700;
+  color:var(--primary);
+  margin-bottom:20px;
+}
+
+.exam-info p{
+  font-size:1.05rem;
+  line-height:1.7;
+  color:#374151;
+}
+
+.exam-info ul{
+  margin-top:24px;
+  list-style:none;
+}
+
+.exam-info li{
+  margin-bottom:12px;
+  font-weight:600;
+  color:#374151;
+}
+
+.exam-info li i{
+  color:var(--secondary);
+  margin-right:8px;
+}
+
+/* RIGHT PANEL */
+.exam-login{
+  flex:1;
+  padding:60px 50px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+.exam-login h2{
+  font-size:1.6rem;
+  color:var(--primary);
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+.exam-login small{
+  color:#6b7280;
+  margin-bottom:30px;
+}
+
+/* FORM */
+form{
+  width:100%;
+  max-width:380px;
+}
+
+.input-group{
+  position:relative;
+  margin-bottom:22px;
+}
+
+.input-group input{
+  width:100%;
+  padding:15px 46px 15px 16px;
+  border-radius:10px;
+  border:1.6px solid var(--border);
+  font-size:15px;
+  transition:.25s ease;
+}
+
+.input-group input:focus{
+  outline:none;
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(122,31,43,.15);
+}
+
+.input-group i{
+  position:absolute;
+  right:15px;
+  top:15px;
+  color:var(--primary);
+}
+
+/* BUTTON */
+button{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(
+    135deg,
+    var(--primary),
+    var(--secondary)
+  );
+  color:#fff;
+  font-weight:700;
+  font-size:16px;
+  cursor:pointer;
+  transition:.3s ease;
+}
+
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 30px rgba(122,31,43,.40);
+}
+
+#msg{
+  min-height:22px;
+  font-weight:600;
+  color:#c53030;
+}
+
+.footer{
+  margin-top:26px;
+  font-size:12.5px;
+  color:#6b7280;
+  text-align:center;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .exam-wrapper{
+    flex-direction:column;
+  }
+  .exam-info{
+    border-right:none;
+    border-bottom:3px solid var(--primary);
+    padding:40px;
+  }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="exam-wrapper">
+
+  <!-- LEFT INFO PANEL -->
+  <div class="exam-info">
+    <h1>Student Examination Portal</h1>
+    <p>
+      Welcome to the official CBT examination platform.
+      Please ensure your details are correct before proceeding.
+    </p>
+
+    <ul>
+      <li><i class="fa-solid fa-check"></i> Secure & monitored exam access</li>
+      <li><i class="fa-solid fa-check"></i> One-time student verification</li>
+      <li><i class="fa-solid fa-check"></i> Auto-submission on time completion</li>
+    </ul>
+  </div>
+
+  <!-- RIGHT LOGIN PANEL -->
+  <div class="exam-login">
+    <h2>Student Login</h2>
+    <small>Enter your details to start the exam</small>
+    <div id="msg" class="text-danger mb-2"></div>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <input id="firstName" type="text" placeholder="First Name" required>
+        <i class="fa-solid fa-user"></i>
+      </div>
+
+      <div class="input-group">
+        <input id="lastName" type="text" placeholder="Last Name" required>
+        <i class="fa-solid fa-user"></i>
+      </div>
+
+      <div class="input-group">
+        <input id="studentClass" type="text" placeholder="Class (e.g. JSS2A)" required>
+        <i class="fa-solid fa-school"></i>
+      </div>
+
+      <button type="submit">Start Exam</button>
+    </form>
+
+    <div class="footer">
+      © 2026 PARAKLETOS INTERNATIONAL SCHOOL. ALL RIGHTS RESERVED 
+    </div>
+  </div>
+
+</div>
+
+<!-- ERROR MODAL --> 
+ <div id="errorModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center;z-index:1000;"> 
+  <div style="background:#fff;padding:20px;border-radius:10px;max-width:300px;text-align:center;position:relative;">
+     <span id="closeModal" style="position:absolute;top:8px;right:12px;cursor:pointer;font-size:18px;">&times;</span> 
+  <p id="modalMessage">Login failed. Please try again.</p> </div> </div>
+
+<!-- Firebase / Logic -->
+<script type="module" src="assets/js/exam-login.js"></script>
+
+</body>
+</html>

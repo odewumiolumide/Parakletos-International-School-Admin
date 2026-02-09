@@ -16,7 +16,7 @@ if (studentNameInput) {
 // ✅ Firebase Configuration
 // ===============================
 const firebaseConfig = {
-   apiKey: "AIzaSyBZMWQcbpd7_dC9qS_C3QWk0P8xT5c8050",
+  apiKey: "AIzaSyBZMWQcbpd7_dC9qS_C3QWk0P8xT5c8050",
   authDomain: "parakletos-students.firebaseapp.com",
   databaseURL: "https://parakletos-students-default-rtdb.firebaseio.com",
   projectId: "parakletos-students",
