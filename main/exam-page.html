@@ -10,9 +10,10 @@
 
 <style>
   body {
-    background: #eef2f7; /* soft neutral background */
+    background: #fff5f5; /* soft neutral background with red touch */
     min-height: 100vh;
     font-family: "Segoe UI", sans-serif;
+    color: #1f2937;
   }
 
   .page-wrapper {
@@ -22,7 +23,7 @@
   }
 
   .page-title {
-    color: #1f3c88; /* calm academic blue */
+    color: #dc2626; /* vibrant red for headers */
     text-align: center;
     font-weight: 600;
     margin-bottom: 25px;
@@ -31,15 +32,15 @@
   /* RULES CARD */
   .rules-card {
     background: #ffffff;
-    border-left: 6px solid #1f3c88;
+    border-left: 6px solid #dc2626; /* red accent for emphasis */
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 25px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 12px rgba(220,38,38,0.15);
   }
 
   .rules-card h5 {
-    color: #1f3c88;
+    color: #dc2626;
     font-weight: 600;
   }
 
@@ -53,41 +54,44 @@
     background: #ffffff;
     border-radius: 12px;
     padding: 25px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    box-shadow: 0 6px 18px rgba(220,38,38,0.1);
   }
 
   /* TABLE */
   .table thead {
-    background: #1f3c88;
+    background: #dc2626;
     color: #ffffff;
   }
 
   .table tbody tr:hover {
-    background-color: #f2f6ff; /* very soft hover */
+    background-color: #ffeaea; /* soft red hover for accessibility */
   }
 
   .table td, .table th {
     vertical-align: middle;
-    color: #222;
+    color: #1f2937;
   }
 
   /* START BUTTON */
   #startExamBtn {
-    background: #1f3c88;
+    background: #dc2626;
     border: none;
     padding: 12px 40px;
     font-size: 17px;
     border-radius: 8px;
     transition: 0.25s ease;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
   }
 
   #startExamBtn:disabled {
-    background: #bfc6d1;
+    background: #f5b5b5;
     cursor: not-allowed;
   }
 
   #startExamBtn:hover:not(:disabled) {
-    background: #16306b;
+    background: #b91c1c;
   }
 
   /* MOBILE */
@@ -97,6 +101,7 @@
     }
   }
 </style>
+
 
 </head>
 

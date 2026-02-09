@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Exam ontent | Parakletos International School CBT</title>
+<title>Exam Content | Parakletos International School CBT</title>
 <link rel="icon" type="image/png" href="assets/images/auth/para logo.jpeg">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
   :root {
-    --blue-main: #1f3c88;
-    --blue-soft: #f2f6ff;
-    --blue-border: #d6def5;
-    --text-dark: #222;
-    --muted: #666;
+    --blue-main: #7a1f2b;      /* Wine primary */
+    --blue-soft: #fff5f6;      /* Soft wine background */
+    --blue-border: #e5e7eb;    /* Neutral border */
+    --text-dark: #1f2937;
+    --muted: #6b7280;
   }
 
   body {
-    background: #eef2f7;
+    background: linear-gradient(135deg, #7a1f2b, #ffffff);
     font-family: "Segoe UI", sans-serif;
     color: var(--text-dark);
   }
@@ -28,7 +28,7 @@
     background: #ffffff;
     padding: 30px 35px;
     border-radius: 14px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    box-shadow: 0 30px 70px rgba(122, 31, 43, 0.25);
   }
 
   /* HEADER */
@@ -100,7 +100,7 @@
   }
 
   .question-nav button.marked {
-    border: 2px dashed #f0ad4e;
+    border: 2px dashed #c53030;
   }
 
   /* PROGRESS */
@@ -123,7 +123,7 @@
   }
 
   .question-card:hover {
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    box-shadow: 0 6px 18px rgba(122, 31, 43, 0.15);
   }
 
   .question-card p {
@@ -147,37 +147,43 @@
     min-width: 200px;
     font-weight: 600;
     font-size: 1.1rem;
-    background: var(--blue-main);
+    background:linear-gradient(
+    135deg,
+    var(--primary),
+    var(--secondary)
+  );
+    background: linear-gradient(135deg, #7a1f2b, #c53030);
     border: none;
     border-radius: 8px;
     padding: 12px;
+    color: #fff;
   }
 
   .submit-btn:hover {
-    background: #16306b;
+    background: linear-gradient(135deg, #6a1a24, #b91c1c);
   }
 
   /* ALERT MESSAGE */
   .alert-msg {
     text-align: center;
     font-weight: bold;
-    color: #c62828;
+    color: #c53030;
   }
 
+  /* LOGOUT BUTTON */
   .logout-btn {
-  background: #444;          /* dark grey, not aggressive */
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-}
+    background: #444;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
 
-.logout-btn:hover {
-  background: #333;
-}
-
+  .logout-btn:hover {
+    background: #333;
+  }
 
   /* MOBILE */
   @media(max-width:768px){
