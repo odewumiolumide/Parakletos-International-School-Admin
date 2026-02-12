@@ -41,8 +41,8 @@ if(!student || !resultData){
   });
 
   // Signatures
-  document.getElementById("classTeacherSignatureImg").src = resultData.classTeacherSignature || "assets/images/auth/logo1.png";
-  document.getElementById("proprietorSignatureImg").src = resultData.headTeacherSignature || "assets/images/auth/logo1.png";
+  document.getElementById("classTeacherSignatureImg").src = resultData.classTeacherSignature || "assets/images/auth/Princpal Signature.jpeg";
+  document.getElementById("proprietorSignatureImg").src = resultData.headTeacherSignature || "assets/images/auth/School Stamp.jpeg";
 
  // Subjects
 let index=1, totals=[];
