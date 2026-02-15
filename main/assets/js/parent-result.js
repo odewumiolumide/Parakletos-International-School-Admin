@@ -65,11 +65,36 @@ for(const subject in resultData.Subjects){
   </tr>`;
 }
 
-  // Calculate total and average
-  const totalScore = totals.reduce((a,b)=>a+b,0);
-  const avgScore = totals.length ? (totalScore / totals.length).toFixed(2) : 0;
-  document.getElementById("totalMarks").textContent = totalScore;
-  document.getElementById("averageScore").textContent = avgScore;
+
+//Calcuate ]
+
+// Sum all subject totals
+const totalScore = totals.reduce((sum, score) => sum + score, 0);
+
+// Calculate total obtainable automatically
+// If each subject max is 200 (50 + 50 + 100)
+const maxPerSubject = 200;
+
+const totalObtainable = totals.length * maxPerSubject;
+
+// Calculate percentage safely
+let avgScore = 0;
+
+if (totalObtainable > 0) {
+    avgScore = (totalScore / totalObtainable) * 100;
+
+    // Prevent percentage above 100
+    if (avgScore > 100) {
+        avgScore = 100;
+    }
+
+    avgScore = avgScore.toFixed(2);
+}
+
+// Display results
+document.getElementById("totalMarks").textContent = totalScore;
+document.getElementById("averageScore").textContent = avgScore + "%";
+
 
   // Class Teacher Remark
   document.getElementById("classTeacherRemark").textContent = resultData.classTeacherRemark || "-";

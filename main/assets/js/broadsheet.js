@@ -145,79 +145,85 @@ async function renderBroadsheet() {
   broadsheetHead.innerHTML = headerHTML;
 
   // -----------------------------
-  // Compute Grand Totals for all students
-  // -----------------------------
-  const studentTotals = await Promise.all(filteredStudents.map(async student => {
-    const resultData = await fetchResults(student.studentID, termVal || student.term);
-    const subjectsData = resultData.Subjects || {};
-    let grandTotal = 0;
-    let countSubjects = 0;
+// Compute Grand Totals & Average Percentage for all students
+// -----------------------------
+const studentTotals = await Promise.all(filteredStudents.map(async student => {
+  const resultData = await fetchResults(student.studentID, termVal || student.term);
+  const subjectsData = resultData.Subjects || {};
 
-    Object.keys(subjectsData).forEach(subName => {
-      const ca1 = parseFloat(subjectsData[subName].ca1) || 0;
-      const ca2 = parseFloat(subjectsData[subName].ca2) || 0;
-      const exam = parseFloat(subjectsData[subName].exam) || 0;
-      const total = ca1 + ca2 + exam;
-      grandTotal += total;
-      countSubjects++;
-    });
+  let grandTotal = 0;      // Total obtained by student
+  let grandMax = 0;        // Total obtainable across subjects
 
-    return { student, resultData, grandTotal };
-  }));
+  Object.values(subjectsData).forEach(sub => {
+    const ca1 = parseFloat(sub.ca1) || 0;
+    const ca2 = parseFloat(sub.ca2) || 0;
+    const exam = parseFloat(sub.exam) || 0;
 
-  // Sort descending by Grand Total
-  studentTotals.sort((a, b) => b.grandTotal - a.grandTotal);
+    // Sum obtained
+    grandTotal += ca1 + ca2 + exam;
 
-  // Assign positions (handle ties)
-  let lastTotal = null, lastPosition = 0;
-  studentTotals.forEach((entry, index) => {
-    if(entry.grandTotal === lastTotal){
-      entry.position = lastPosition;
-    } else {
-      entry.position = index + 1;
-      lastPosition = index + 1;
-      lastTotal = entry.grandTotal;
-    }
+    // Maximum obtainable per subject (50 + 50 + 100 = 200)
+    grandMax += 200; 
   });
 
-  // -----------------------------
-  // Build rows
-  // -----------------------------
-  let count = 1;
-  for (let entry of studentTotals) {
-    const student = entry.student;
-    const resultData = entry.resultData;
-    const grandTotal = entry.grandTotal;
-    const position = entry.position;
+  // Average Percentage
+  const average = grandMax > 0 ? ((grandTotal / grandMax) * 100).toFixed(2) : 0;
 
-    const subjectsData = resultData.Subjects || {};
-    const subMap = {};
+  return { student, resultData, grandTotal, average };
+}));
 
-    Object.keys(subjectsData).forEach(subName => {
-      const ca1 = subjectsData[subName].ca1 !== undefined ? parseFloat(subjectsData[subName].ca1) : 0;
-      const ca2 = subjectsData[subName].ca2 !== undefined ? parseFloat(subjectsData[subName].ca2) : 0;
-      const exam = subjectsData[subName].exam !== undefined ? parseFloat(subjectsData[subName].exam) : 0;
-      const total = ca1 + ca2 + exam;
-      subMap[subName.toLowerCase()] = { ca1, ca2, exam, total, originalName: subName };
-    });
+// Sort descending by Grand Total
+studentTotals.sort((a, b) => b.grandTotal - a.grandTotal);
 
-    let countSubjects = Object.keys(subjectsData).length;
-    let avgScore = countSubjects ? (grandTotal / countSubjects).toFixed(2) : 0;
-
-    let grade = "E";
-    if (avgScore >= 75) grade = "A";
-    else if (avgScore >= 60) grade = "B";
-    else if (avgScore >= 50) grade = "C";
-    else if (avgScore >= 40) grade = "D";
-
-    let rowHTML = `<tr><td>${count++}</td><td>${student.studentID}</td><td>${student.name}</td>`;
-    subjects.forEach(sub=>{
-      const data = subMap[sub.toLowerCase()] || { ca1: "-", ca2: "-", exam: "-", total: "-" };
-      rowHTML += `<td>${data.ca1}</td><td>${data.ca2}</td><td>${data.exam}</td><td>${data.total}</td>`;
-    });
-    rowHTML += `<td>${grandTotal}</td><td>${avgScore}</td><td>${grade}</td><td>${position}</td></tr>`;
-    broadsheetBody.innerHTML += rowHTML;
+// Assign positions (handle ties)
+let lastTotal = null, lastPosition = 0;
+studentTotals.forEach((entry, index) => {
+  if(entry.grandTotal === lastTotal){
+    entry.position = lastPosition;
+  } else {
+    entry.position = index + 1;
+    lastPosition = index + 1;
+    lastTotal = entry.grandTotal;
   }
+});
+
+// -----------------------------
+// Build rows
+// -----------------------------
+let count = 1;
+for (let entry of studentTotals) {
+  const student = entry.student;
+  const resultData = entry.resultData;
+  const grandTotal = entry.grandTotal;
+  const avgScore = entry.average; // Use the correct average %
+  const position = entry.position;
+
+  const subjectsData = resultData.Subjects || {};
+  const subMap = {};
+
+  Object.keys(subjectsData).forEach(subName => {
+    const ca1 = subjectsData[subName].ca1 !== undefined ? parseFloat(subjectsData[subName].ca1) : 0;
+    const ca2 = subjectsData[subName].ca2 !== undefined ? parseFloat(subjectsData[subName].ca2) : 0;
+    const exam = subjectsData[subName].exam !== undefined ? parseFloat(subjectsData[subName].exam) : 0;
+    const total = ca1 + ca2 + exam;
+    subMap[subName.toLowerCase()] = { ca1, ca2, exam, total, originalName: subName };
+  });
+
+  // Grade based on average %
+  let grade = "E";
+  if (avgScore >= 75) grade = "A";
+  else if (avgScore >= 60) grade = "B";
+  else if (avgScore >= 50) grade = "C";
+  else if (avgScore >= 40) grade = "D";
+
+  let rowHTML = `<tr><td>${count++}</td><td>${student.studentID}</td><td>${student.name}</td>`;
+  subjects.forEach(sub=>{
+    const data = subMap[sub.toLowerCase()] || { ca1: "-", ca2: "-", exam: "-", total: "-" };
+    rowHTML += `<td>${data.ca1}</td><td>${data.ca2}</td><td>${data.exam}</td><td>${data.total}</td>`;
+  });
+  rowHTML += `<td>${grandTotal}</td><td>${avgScore}%</td><td>${grade}</td><td>${position}</td></tr>`;
+  broadsheetBody.innerHTML += rowHTML;
+}
 }
 
 // -----------------------------
